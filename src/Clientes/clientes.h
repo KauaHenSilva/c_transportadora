@@ -1,5 +1,7 @@
 #pragma once
 
+void hello_word_clientes();
+
 typedef struct clientes{
   int idCliente;
   char *nome;

@@ -1,5 +1,7 @@
 #pragma once
 
+void hello_word_rotas_nao_efetuadas();
+
 typedef struct rotasNaoEfetuadas{
   int idRota;
   char *nome;

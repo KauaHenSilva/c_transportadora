@@ -1,3 +1,6 @@
+#pragma once
+
+void hello_word_score();
 
 typedef enum typeScore{
   ENTREGA_PRIMEIRA = 5,

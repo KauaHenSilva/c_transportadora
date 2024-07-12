@@ -1,5 +1,7 @@
 #pragma once
-#include "../RotaNaoEfetuada/rotaNaoEfetuda.h"
+#include <rota_nao_efetuada.h>
+
+void hello_word_rotas_entrega();
 
 typedef struct rotaEntrega
 {
@@ -14,8 +16,8 @@ typedef struct rotaEntrega
 
 typedef struct FilaRota
 {
-  rotaEntrega *inicio;
-  rotaEntrega *fim;
+  RotaEntrega *inicio;
+  RotaEntrega *fim;
 } FilaRota;
 
 extern FilaRota *rotas;
