@@ -134,3 +134,34 @@ void editarCliente(Clientes *cliente){
         printf("Cliente com ID %d não encontrado.\n", idParaEditar);
     }
 }
+
+void excluirCliente(Clientes **cliente){
+    int idParaExcluir;
+    printf("Digite o ID do cliente que deseja excluir: ");
+    scanf("%d", &idParaExcluir);
+
+    Clientes *atual = *cliente;
+    Clientes *anterior = NULL;
+
+    while (atual != NULL) {
+        if (atual->idCliente == idParaExcluir) {
+            if (anterior == NULL) {
+                *cliente = atual->prox;
+            } else {
+                anterior->prox = atual->prox;
+            }
+
+            free(atual->nome);
+            free(atual->endereco);
+            free(atual);
+
+            printf("Cliente com ID %d excluído com sucesso.\n", idParaExcluir);
+            return;
+        }
+
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    printf("Cliente com ID %d não encontrado.\n", idParaExcluir);
+}

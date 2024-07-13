@@ -15,6 +15,6 @@ extern Clientes *clientes;
 void cadastrarCliente(Clientes **cliente);//feito
 void listarClientes(Clientes *cliente);//feito
 void buscarCliente(Clientes *cliente);//feito
-void editarCliente(Clientes *cliente);
-void excluirCliente(Clientes **cliente, int idCliente);
+void editarCliente(Clientes *cliente);//feito
+void excluirCliente(Clientes **cliente);//feito
 

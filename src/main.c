@@ -7,13 +7,14 @@
 
 int main()
 {
-
+  
   
   hello_word_clientes();
   cadastrarCliente(&clientes);
   listarClientes(clientes);
   buscarCliente(clientes);
   editarCliente(clientes);
+  excluirCliente(&clientes);
   //hello_word_devolucao();
   //hello_word_rotas_entrega();
   //hello_word_rotas_nao_efetuadas();
