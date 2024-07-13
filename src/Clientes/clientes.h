@@ -5,16 +5,16 @@ void hello_word_clientes();
 typedef struct clientes{
   int idCliente;
   char *nome;
-  char *endereço;
+  char *endereco;
 
   struct clientes *prox;
 } Clientes;
 
 extern Clientes *clientes;
 
-void cadastrarCliente(Clientes **cliente);
-void listarClientes(Clientes *cliente);
-void buscarCliente(Clientes *cliente, int idCliente);
+void cadastrarCliente(Clientes **cliente);//feito
+void listarClientes(Clientes *cliente);//feito
+void buscarCliente(Clientes *cliente);//feito
 void editarCliente(Clientes *cliente, int idCliente);
 void excluirCliente(Clientes **cliente, int idCliente);
 
