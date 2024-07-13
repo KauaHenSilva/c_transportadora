@@ -95,3 +95,42 @@ void listarClientes(Clientes *cliente){
     }
 }
 
+void editarCliente(Clientes *cliente){
+    int idParaEditar;
+    printf("Digite o ID do cliente que deseja editar: ");
+    scanf("%d", &idParaEditar);
+
+    Clientes *atual = cliente;
+    int encontrado = 0;
+
+    while (atual != NULL) {
+        if (atual->idCliente == idParaEditar) {
+            printf("\n=================== DADOS ATUAIS DO CLIENTE ===================\n");
+            printf("Nome atual: %s\n", atual->nome);
+            printf("Endereço atual: %s\n", atual->endereco);
+            printf("==============================================================\n");
+
+            printf("Digite o novo nome do cliente: ");
+            scanf(" %[^\n]s", atual->nome);  // Lê o novo nome
+
+            printf("Digite o novo endereço do cliente: ");
+            scanf(" %[^\n]s", atual->endereco);  // Lê o novo endereço
+
+            printf("Cliente editado com sucesso!\n");
+
+            printf("\n=================== NOVOS DADOS ATUALIZADOS ===================\n");
+            printf("Nome: %s\n", atual->nome);
+            printf("Endereço: %s\n", atual->endereco);
+            printf("==============================================================\n");
+
+
+            encontrado = 1;
+            break;
+        }
+        atual = atual->prox;
+    }
+
+    if (!encontrado) {
+        printf("Cliente com ID %d não encontrado.\n", idParaEditar);
+    }
+}

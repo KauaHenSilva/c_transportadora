@@ -13,7 +13,7 @@ int main()
   cadastrarCliente(&clientes);
   listarClientes(clientes);
   buscarCliente(clientes);
-
+  editarCliente(clientes);
   //hello_word_devolucao();
   //hello_word_rotas_entrega();
   //hello_word_rotas_nao_efetuadas();
