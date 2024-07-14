@@ -1,12 +1,13 @@
-#include <rota_nao_efetuada.h>
+#include <rota_segunda_entrega.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void hello_word_rotas_nao_efetuadas()
 {
   printf("Hello, World! Rotas não efetuadas\n");
 }
 
-void inserirRotaNaoEfetuada(Pilha *pilha, RotaNaoEfetuada *rotaNaoEfetuada){
+void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaNaoEfetuada *rotaNaoEfetuada){
   RotaNaoEfetuada *novo = malloc(sizeof(RotaNaoEfetuada));
   if(novo == NULL){
     printf("Erro ao alocar memoria\n");
@@ -17,7 +18,7 @@ void inserirRotaNaoEfetuada(Pilha *pilha, RotaNaoEfetuada *rotaNaoEfetuada){
   }
 }
 
-void finalizarRotaNaoEfetuada(Pilha *pilha){
+void finalizarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha){
   RotaNaoEfetuada *rota;
   while(pilha->topo!= NULL){
     rota = pilha->topo;

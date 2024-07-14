@@ -5,20 +5,23 @@ project(
   default_options: ['warning_level=3'],
 )
 
-subdir('src/Clientes')
-subdir('src/Devolucao')
-subdir('src/Rotas')
-subdir('src/Score')
+subdir('src/app/Clientes')
+subdir('src/app/Entrega')
+subdir('src/app/Score')
 
 inc = [inc_cliente]
-inc += inc_devolucao
-inc += includes_rotas
+inc += includes_entrega
 inc += inc_score
 
 libs = [lib_cliente]
-libs += lib_devolucao
-libs += lib_rotas
+libs += lib_entrega
 libs += lib_score
+
+subdir('src/tests')
+
+libs += lib_utils
+inc += inc_utils
+
 
 executable(
   'Tranportadora',
@@ -27,3 +30,5 @@ executable(
   include_directories: inc,
   install: true,
 )
+
+# Testes
