@@ -9,15 +9,14 @@ typedef struct rotasNaoEfetuadas{
   int status;
   int tentativas;
 
-  DadosEnvio *dadosEnvio;
-  struct rotasNaoEfetuadas *ant;
+  DadosEnvio *dadosEnvio; // Aqui vai ser armazenado os endereços que vao ser tentados entregar
+
+  struct rotasNaoEfetuadas *ant; // Nesseario para ter acesso ao elemento anterior
 } RotaNaoEfetuada;
 
 typedef struct pilhaRotaNaoEfetuada {
   RotaNaoEfetuada *topo;
 } PilhaRotaNaoEfetuada;
-
-extern PilhaRotaNaoEfetuada *pilhaRotaNaoEfetuada;
 
 // Structs Rotas Para Entrega
 
@@ -25,9 +24,11 @@ typedef struct rotaEntrega
 {
   int idRota;
   char *nomeProduto;
-  char *endereco;
+  char *endereco; // Temporario
   int idCliente;
   int status;
+
+  DadosEnvio *dadosEnvio; // Aqui vai ser armazenado os endereços que vao ser tentados entregar
 
   struct rotaEntrega *prox;
 } RotaEntrega;
@@ -37,5 +38,3 @@ typedef struct FilaRota
   RotaEntrega *inicio;
   RotaEntrega *fim;
 } FilaRota;
-
-extern FilaRota *filaRota;

@@ -101,6 +101,8 @@ RotaEntrega *retornarRota(FilaRota *fila, int idRota)
       return aux;
     aux = aux->prox;
   }
+  
+  return NULL;
 }
 
 
