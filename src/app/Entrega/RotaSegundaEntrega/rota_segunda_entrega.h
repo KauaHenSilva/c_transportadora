@@ -2,10 +2,14 @@
 
 #include <struct_rotas_entrega.h>
 
-void hello_word_rotas_nao_efetuadas();
+typedef struct pilha {
+  RotaEntrega *topo;
+} Pilha;
 
-void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaNaoEfetuada *rotaNaoEfetuada);
-void finalizarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha);
-void listarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha);
-void buscarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota);
-void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota);
+void hello_word_rotas_nao_efetuadas();
+Pilha *criarPilhaNaoEntregue();
+void inserirRotaNaoEfetuada(Pilha *pilha, RotaEntrega *rota);
+finalizarRotaNaoEfetuada(Pilha *pilha);
+void listarRotaNaoEfetuada(Pilha *pilha);
+void buscarRotaNaoEfetuada(Pilha *pilha, int idRota);
+void editarRotaNaoEfetuada(Pilha *pilha, int idRota);
