@@ -16,7 +16,7 @@ int main()
   editarCliente(clientes);
   excluirCliente(&clientes);
   //hello_word_devolucao();
-  //hello_word_rotas_entrega();
+  hello_word_rotas_entrega();
   //hello_word_rotas_nao_efetuadas();
   //hello_word_score();
   return 0;
