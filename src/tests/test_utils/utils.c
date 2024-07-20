@@ -2,22 +2,13 @@
 #include <utils.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-void CriarRotaEntrega(RotaEntrega *rota, char *endereco, char *nomeProduto, int idCliente, int idRota)
+void verificarRota(RotaEntrega *rota, int idRota , StatusRota status)
 {
-  rota->endereco = endereco;
-  rota->nomeProduto = nomeProduto;
-  rota->idCliente = idCliente;
-  rota->idRota = idRota;
-}
-
-void verificarRota(RotaEntrega *rota, char *endereco, char *nomeProduto, int idCliente, int idRota)
-{
-  if (!(strcmp(rota->endereco, endereco) == 0 &&
-        strcmp(rota->nomeProduto, nomeProduto) == 0 &&
-        rota->idCliente == idCliente &&
-        rota->idRota == idRota))
+  if (!(rota->idRota == idRota && rota->status == status))
   {
+    printf("Erro ao criar rota!\n");
     exit(1);
   }
 }

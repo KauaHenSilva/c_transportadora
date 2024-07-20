@@ -1,16 +1,10 @@
-#include <clientes.h>
+#include <clientes_entrega.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-Clientes *clientes = NULL;
 
-void hello_word_clientes()
-{
-  printf("Hello, World! Clientes\n");
-}
-
-void cadastrarCliente(Clientes **cliente) {
+void cadastrarCliente(ClienteEnvio **cliente) {
     // Declarando variáveis para armazenar os dados do cliente
     int idCliente;
     char nome[100];
@@ -28,10 +22,8 @@ void cadastrarCliente(Clientes **cliente) {
     scanf("%d", &idCliente);
     getchar(); // Limpando o buffer 
 
-
-
     // Alocando memória para o novo cliente
-    Clientes *novoCliente = (Clientes *)malloc(sizeof(Clientes));
+    ClienteEnvio *novoCliente = (ClienteEnvio *)malloc(sizeof(ClienteEnvio));
     if (novoCliente == NULL) {
         printf("Erro ao alocar memória.\n");
         return;
@@ -39,16 +31,18 @@ void cadastrarCliente(Clientes **cliente) {
 
     // Preenchendo os dados do cliente
     novoCliente->idCliente = idCliente;
-    novoCliente->nome = strdup(nome); // Alocando a memória e copiando o nome do cliente
-    novoCliente->endereco = strdup(endereco); // Alocando a memória e copiando o endereço
     novoCliente->prox = NULL;
 
+    novoCliente->nome = strdup(nome); // Alocando a memória e copiando o nome
+    novoCliente->endereco = strdup(endereco); // Alocando a memória e copiando o endereço
+
+    
     // Verificando se a lista está vazia
     if (*cliente == NULL) {
         *cliente = novoCliente;
     } else {
         // Inserindo o novo cliente no final da lista
-        Clientes *atual = *cliente;
+        ClienteEnvio *atual = *cliente;
         while (atual->prox != NULL) {
             atual = atual->prox;
         }
@@ -58,8 +52,8 @@ void cadastrarCliente(Clientes **cliente) {
     printf("Cliente cadastrado com sucesso.\n");
 }
 
-void listarClientes(Clientes *cliente){
-    Clientes *atual = cliente;
+void listarClientes(ClienteEnvio *cliente){
+    ClienteEnvio *atual = cliente;
     while (atual != NULL) {
         printf("\n==============LISTA DE CLIENTES CADASTRADOS============================\n");
         printf("Nome: %s\nID: %d\nEndereço: %s\n", atual->nome, atual->idCliente, atual->endereco);
@@ -69,12 +63,12 @@ void listarClientes(Clientes *cliente){
 }
 
 
-   void buscarCliente(Clientes *cliente) {
+   void buscarCliente(ClienteEnvio *cliente) {
     int id_Busca;
     printf("\nDigite o ID do cliente que deseja buscar: ");
     scanf("%d", &id_Busca);
 
-    Clientes *atual = cliente;
+    ClienteEnvio *atual = cliente;
     int encontrado = 0;
 
     while (atual != NULL) {
@@ -95,12 +89,12 @@ void listarClientes(Clientes *cliente){
     }
 }
 
-void editarCliente(Clientes *cliente){
+void editarCliente(ClienteEnvio *cliente){
     int idParaEditar;
     printf("Digite o ID do cliente que deseja editar: ");
     scanf("%d", &idParaEditar);
 
-    Clientes *atual = cliente;
+    ClienteEnvio *atual = cliente;
     int encontrado = 0;
 
     while (atual != NULL) {
@@ -135,13 +129,13 @@ void editarCliente(Clientes *cliente){
     }
 }
 
-void excluirCliente(Clientes **cliente){
+void excluirCliente(ClienteEnvio **cliente){
     int idParaExcluir;
     printf("Digite o ID do cliente que deseja excluir: ");
     scanf("%d", &idParaExcluir);
 
-    Clientes *atual = *cliente;
-    Clientes *anterior = NULL;
+    ClienteEnvio *atual = *cliente;
+    ClienteEnvio *anterior = NULL;
 
     while (atual != NULL) {
         if (atual->idCliente == idParaExcluir) {

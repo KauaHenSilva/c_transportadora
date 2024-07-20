@@ -9,6 +9,7 @@ int main()
 
   if(!(fila->inicio == NULL && fila->fim == NULL))
     return 1;
-    
+  
+  freeFilaRota(fila);
   return 0;
 }
