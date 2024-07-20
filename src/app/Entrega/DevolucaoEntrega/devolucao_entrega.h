@@ -5,7 +5,7 @@ void hello_word_devolucao();
 typedef struct devolucao{
   int idRota;
   char *nomeProduto;
-  char *endereço;
+  char *endereco;
   int idCliente;
   int status;
   int tentativas;
