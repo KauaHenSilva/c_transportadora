@@ -9,11 +9,16 @@ int main()
   criarFilaRota(fila);
 
   RotaEntrega *rota = (RotaEntrega *)malloc(sizeof(RotaEntrega));
-  CriarRotaEntrega(rota, "Rua 1", "Produto 1", 1, 1);
+  creatRota(rota, NULL);
   inserirRota(fila, rota);
-  
-  RotaEntrega *rota_final = retornarRota(fila, rota->idRota);
-  verificarRota(rota_final, "Rua 1", "Produto 1", 1, 1);
-    
+
+  RotaEntrega *rota2 = (RotaEntrega *)malloc(sizeof(RotaEntrega));
+  creatRota(rota2, NULL);
+  rota2->status = 1;
+
+  editarRota(fila, rota->idRota, rota2);
+  verificarRota(fila->inicio, 2, 1);
+
+  freeFilaRota(fila);
   return 0;
 }

@@ -5,16 +5,13 @@ project(
   default_options: ['warning_level=3'],
 )
 
-subdir('src/app/Clientes')
 subdir('src/app/Entrega')
 subdir('src/app/Score')
 
-inc = [inc_cliente]
-inc += includes_entrega
+inc     = [inc_entrega]
 inc += inc_score
 
-libs = [lib_cliente]
-libs += lib_entrega
+libs     =  [lib_entrega]
 libs += lib_score
 
 subdir('src/tests')

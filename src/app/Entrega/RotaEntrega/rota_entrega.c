@@ -3,9 +3,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void hello_word_rotas_entrega()
+int idRoutaCont = 1;
+
+void printRota(RotaEntrega *rota)
 {
-  printf("Hello, World! Rotas de entrega\n");
+  printf("Id da rota: %d\n", rota->idRota);
+  rota->status == ENTREGAR ? printf("Status: Pendente\n") : printf("Status: Finalizado\n");
+
+  ClienteEnvio *aux = rota->clientes;
+  while (aux != NULL)
+  {
+    printf("cpf: %s\n", aux->cpf);
+    printf("Nome do cliente: %s\n", aux->nome);
+    printf("Produtos:\n");
+
+    Produto *auxProd = aux->produtos;
+    while (auxProd != NULL)
+    {
+      printf("Nome do produto: %s\n", auxProd->nome);
+      printf("id: %d\n", auxProd->id);
+      auxProd = auxProd->prox;
+    }
+    aux = aux->prox;
+  }
 }
 
 void criarFilaRota(FilaRota *fila)
@@ -14,22 +34,12 @@ void criarFilaRota(FilaRota *fila)
   fila->fim = NULL;
 }
 
-void inputValoresRota(RotaEntrega *rota)
+void creatRota(RotaEntrega *rota, ClienteEnvio *clientes)
 {
-  printf("Digite o id da rota: ");
-  scanf("%d", &rota->idRota);
-
-  printf("Digite o nome do produto: ");
-  scanf("%s", rota->nomeProduto);
-
-  printf("Digite o endereço: ");
-  scanf("%s", rota->endereco);
-
-  printf("Digite o id do cliente: ");
-  scanf("%d", &rota->idCliente);
-
-  printf("Digite o status: ");
-  scanf("%d", &rota->status);
+  rota->clientes = clientes;
+  rota->prox = NULL;
+  rota->status = ENTREGAR;
+  rota->idRota = idRoutaCont++;
 }
 
 void inserirRota(FilaRota *fila, RotaEntrega *newRota)
@@ -47,25 +57,24 @@ void inserirRota(FilaRota *fila, RotaEntrega *newRota)
   }
 }
 
-void finalizarRota(FilaRota *fila)
+int finalizarRota(RotaEntrega *rota)
 {
-  if (fila->inicio == NULL)
+  ClienteEnvio *aux = rota->clientes;
+  while (aux != NULL)
   {
-    printf("Fila vazia\n");
-    return;
+    if (aux->status == ENTREGAR_A_CLINETE)
+    {
+      printf("O cliente %d não recebeu o produto\n", aux->idCliente);
+      return 0;
+    }
   }
 
-  RotaEntrega *aux = fila->inicio;
-  fila->inicio = fila->inicio->prox;
-
-  aux = NULL;
-  free(aux);
-
-  if (fila->inicio == NULL)
-    fila->fim = NULL;
+  printf("Todos os clientes receberam o produto\n");
+  rota->status = ENTREGUE;
+  return 1;
 }
 
-void listarRota(FilaRota *fila)
+void listarRotas(FilaRota *fila)
 {
   if (fila->inicio == NULL)
   {
@@ -77,34 +86,11 @@ void listarRota(FilaRota *fila)
     while (aux != NULL)
     {
       printf("Id da rota: %d\n", aux->idRota);
-      printf("Nome do produto: %s\n", aux->nomeProduto);
-      printf("Endereço: %s\n", aux->endereco);
-      printf("Id do cliente: %d\n", aux->idCliente);
-      printf("Status: %d\n", aux->status);
+      aux->status == ENTREGAR ? printf("Status: Pendente\n") : printf("Status: Finalizado\n");
       aux = aux->prox;
     }
   }
 }
-
-RotaEntrega *retornarRota(FilaRota *fila, int idRota)
-{
-  if (fila->inicio == NULL)
-  {
-    printf("Fila vazia\n");
-    return NULL;
-  }
-
-  RotaEntrega *aux = fila->inicio;
-  while (aux != NULL)
-  {
-    if (aux->idRota == idRota)
-      return aux;
-    aux = aux->prox;
-  }
-  
-  return NULL;
-}
-
 
 void editarRota(FilaRota *fila, int idRota, RotaEntrega *newRota)
 {
@@ -120,9 +106,7 @@ void editarRota(FilaRota *fila, int idRota, RotaEntrega *newRota)
     if (aux->idRota == idRota)
     {
       aux->idRota = newRota->idRota;
-      aux->nomeProduto = newRota->nomeProduto;
-      aux->endereco = newRota->endereco;
-      aux->idCliente = newRota->idCliente;
+      aux->clientes = newRota->clientes;
       aux->status = newRota->status;
       return;
     }
@@ -132,15 +116,52 @@ void editarRota(FilaRota *fila, int idRota, RotaEntrega *newRota)
   printf("Rota não encontrada\n");
 }
 
-void adicionarEntregasNaoEfetuadas(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota)
+RotaEntrega *retornarRota(FilaRota *filaRota, int idRota)
 {
-  RotaNaoEfetuada *novaRota = malloc(sizeof(RotaNaoEfetuada));
-  novaRota->idRota = rota->idRota;
-  novaRota->nome = rota->nomeProduto;
-  // novaRota->endereço = rota->endereço;
-  novaRota->idCliente = rota->idCliente;
-  novaRota->status = rota->status;
-  novaRota->tentativas = 0;
+  if (filaRota->inicio == NULL)
+  {
+    printf("Fila vazia\n");
+    return NULL;
+  }
 
-  inserirRotaNaoEfetuada(pilha, novaRota);
+  RotaEntrega *aux = filaRota->inicio;
+  while (aux != NULL)
+  {
+    if (aux->idRota == idRota)
+      return aux;
+    aux = aux->prox;
+  }
+
+  printf("Rota não encontrada\n");
+  return NULL;
+}
+
+void alterarStatusCliente(ClienteEnvio *cliente, StatusCliente status)
+{
+  cliente->status = status;
+}
+
+void freeFilaRota(FilaRota *filaRota)
+{
+  RotaEntrega *aux = filaRota->inicio;
+  while (aux != NULL)
+  {
+    filaRota->inicio = filaRota->inicio->prox;
+    free(aux);
+    aux = filaRota->inicio;
+  }
+  filaRota->fim = NULL;
+}
+
+void freeRotaEntrega(RotaEntrega *rota)
+{
+  ClienteEnvio *aux = rota->clientes;
+  while (aux != NULL)
+  {
+    rota->clientes = rota->clientes->prox;
+    free(aux);
+    aux = rota->clientes;
+  }
+
+  free(rota);
 }
