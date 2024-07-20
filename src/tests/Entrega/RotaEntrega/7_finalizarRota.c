@@ -22,8 +22,8 @@ int main()
   
   finalizarRota(retornarRota(fila, 3));
 
-  verificarRota(fila->inicio, 1, ENTREGAR);
-  verificarRota(fila->fim, 3, ENTREGUE);
+  verificarRota(fila->inicio, 1, RECEBENDO);
+  verificarRota(fila->fim, 3, FINALIZADO);
 
   return 0;
 }

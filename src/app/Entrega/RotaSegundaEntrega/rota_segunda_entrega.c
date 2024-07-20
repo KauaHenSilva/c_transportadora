@@ -15,9 +15,9 @@ void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota)
   RotaNaoEfetuada *novo = malloc(sizeof(RotaEntrega));
   novo->idRota = rota->idRota;
   novo->clientes = rota->clientes;
-  novo->status = ENTREGAR;
+  novo->status = RECEBENDO;
+  
   novo->prox = pilha->topo;
-
   pilha->topo = novo;
 }
 

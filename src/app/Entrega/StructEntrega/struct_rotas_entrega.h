@@ -4,8 +4,9 @@
 
 typedef enum statusRota
 {
-  ENTREGAR = 0,
-  ENTREGUE = 1,
+  RECEBENDO = 0,
+  ENTREGANDO = 1,
+  FINALIZADO = 2,
 } StatusRota;
 
 typedef struct rotasNaoEfetuadas

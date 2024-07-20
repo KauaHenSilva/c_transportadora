@@ -29,8 +29,8 @@ typedef struct clienteEnvio
   char *nome;
   char *cpf;
   char *endereco;
-
   StatusCliente status;
   Produto *produtos;
+
   struct clienteEnvio *prox;
 } ClienteEnvio;

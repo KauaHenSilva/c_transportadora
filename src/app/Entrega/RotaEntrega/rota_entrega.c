@@ -8,7 +8,20 @@ int idRoutaCont = 1;
 void printRota(RotaEntrega *rota)
 {
   printf("Id da rota: %d\n", rota->idRota);
-  rota->status == ENTREGAR ? printf("Status: Pendente\n") : printf("Status: Finalizado\n");
+  switch (rota->status)
+  {
+  case RECEBENDO:
+    printf("Status: Recebendo Produtos\n");
+    break;
+  case ENTREGANDO:
+    printf("Status: Entregando\n");
+    break;
+  case FINALIZADO:
+    printf("Status: Finalizado\n");
+    break;
+  default:
+    break;
+  }
 
   ClienteEnvio *aux = rota->clientes;
   while (aux != NULL)
@@ -38,7 +51,7 @@ void creatRota(RotaEntrega *rota, ClienteEnvio *clientes)
 {
   rota->clientes = clientes;
   rota->prox = NULL;
-  rota->status = ENTREGAR;
+  rota->status = RECEBENDO;
   rota->idRota = idRoutaCont++;
 }
 
@@ -70,7 +83,7 @@ int finalizarRota(RotaEntrega *rota)
   }
 
   printf("Todos os clientes receberam o produto\n");
-  rota->status = ENTREGUE;
+  rota->status = FINALIZADO;
   return 1;
 }
 
@@ -86,7 +99,18 @@ void listarRotas(FilaRota *fila)
     while (aux != NULL)
     {
       printf("Id da rota: %d\n", aux->idRota);
-      aux->status == ENTREGAR ? printf("Status: Pendente\n") : printf("Status: Finalizado\n");
+      switch (aux->status)
+      {
+      case RECEBENDO:
+        printf("Status: Recebendo Produtos\n");
+        break;
+      case ENTREGANDO:
+        printf("Status: Entregando\n");
+        break;
+      case FINALIZADO:
+        printf("Status: Finalizado\n");
+        break;
+      }
       aux = aux->prox;
     }
   }
