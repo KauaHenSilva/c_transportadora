@@ -171,7 +171,7 @@ void freeFilaRota(FilaRota *filaRota)
   while (aux != NULL)
   {
     filaRota->inicio = filaRota->inicio->prox;
-    free(aux);
+    freeRotaEntrega(aux);
     aux = filaRota->inicio;
   }
   filaRota->fim = NULL;

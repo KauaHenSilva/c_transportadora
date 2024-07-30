@@ -24,10 +24,17 @@ void menuRotaEntrega()
 
     switch (opcao)
     {
+    case 0:
+    {
+      break;
+    }
     case 1:
     {
       RotaEntrega *rota = malloc(sizeof(RotaEntrega));
-      ClienteEnvio *clientes = criarClientes();
+
+      // Falta as funções para adicionar os clientes.
+      ClienteEnvio *clientes = NULL;
+
       creatRota(rota, clientes);
       inserirRota(&filaRota, rota);
       break;
@@ -39,38 +46,42 @@ void menuRotaEntrega()
     }
     case 3:
     {
+      listarRotas(&filaRota);
+
       int idRota;
       printf("Digite o id da rota que deseja editar: ");
       scanf("%d", &idRota);
+
       RotaEntrega *rota = retornarRota(&filaRota, idRota);
+
       if (rota != NULL)
       {
+        RotaEntrega *newRota = malloc(sizeof(RotaEntrega));
+        ClienteEnvio *clientes_ant = rota->clientes;
+        editarCliente(clientes_ant);
+        
+        creatRota(newRota, clientes_ant);
         editarRota(&filaRota, idRota, rota);
       }
       else
-      {
         printf("Rota nao encontrada!\n");
-      }
+
       break;
     }
     case 4:
     {
+      listarRotas(&filaRota);
+
       int idRota;
       printf("Digite o id da rota que deseja finalizar: ");
       scanf("%d", &idRota);
       RotaEntrega *rota = retornarRota(&filaRota, idRota);
+
       if (rota != NULL)
-      {
         finalizarRota(rota);
-      }
       else
-      {
         printf("Rota nao encontrada!\n");
-      }
-      break;
-    }
-    case 0:
-    {
+
       break;
     }
     }
