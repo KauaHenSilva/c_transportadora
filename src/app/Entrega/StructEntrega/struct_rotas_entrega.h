@@ -4,8 +4,9 @@
 
 typedef enum statusRota
 {
-  ENTREGAR = 0,
-  ENTREGUE = 1,
+  RECEBENDO = 0,
+  ENTREGANDO = 1,
+  FINALIZADO = 2,
 } StatusRota;
 
 typedef struct rotasNaoEfetuadas
@@ -36,3 +37,20 @@ typedef struct FilaRota
   RotaEntrega *inicio;
   RotaEntrega *fim;
 } FilaRota;
+
+
+typedef struct devolucao{
+  int idRota;
+  char *nomeProduto;
+  char *endereco;
+  int idCliente;
+  int status;
+  int tentativas;
+
+  struct devolucao *prox;
+} Devolucao;
+
+typedef struct filaDevolucao{
+  Devolucao *inicio;
+  Devolucao *fim;
+} FilaDevolucao;

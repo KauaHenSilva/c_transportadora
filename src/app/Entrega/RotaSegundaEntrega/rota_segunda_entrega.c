@@ -12,11 +12,11 @@ PilhaRotaNaoEfetuada *criarPilhaNaoEntregue()
 
 void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota)
 {
-  RotaNaoEfetuada *novo = (RotaNaoEfetuada *)malloc(sizeof(RotaNaoEfetuada));
-
+  RotaNaoEfetuada *novo = malloc(sizeof(RotaEntrega));
   novo->idRota = rota->idRota;
-  novo->status = rota->status;
   novo->clientes = rota->clientes;
+  novo->status = RECEBENDO;
+
   novo->prox = pilha->topo;
   pilha->topo = novo;
 }
@@ -76,7 +76,11 @@ void listarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha)
     while (aux != NULL)
     {
       printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
-      printf("Status da Rota: %s\n", aux->status == ENTREGAR ? "Entregar" : "Entregue");
+      printf("Status da Rota: %s\n", aux->status == ENTREGANDO
+                                         ? "Entregando"
+                                     : aux->status == FINALIZADO
+                                         ? "Entregue"
+                                         : "Recebendo");
 
       aux = aux->prox;
     }
@@ -98,7 +102,11 @@ void buscarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
     {
       printf("Rota encontrada:\n");
       printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
-      printf("Status da Rota: %s\n", aux->status == ENTREGAR ? "Entregar" : "Entregue");
+      printf("Status da Rota: %s\n", aux->status == ENTREGANDO
+                                         ? "Entregando"
+                                     : aux->status == FINALIZADO
+                                         ? "Entregue"
+                                         : "Recebendo");
       return;
     }
     aux = aux->prox;
@@ -120,15 +128,19 @@ void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
     {
       int newStatus;
       printf("ID da rota a ser editada: %d\n", aux->idRota);
-      printf("Digite o novo status (Entregar = 0 / Entregue = 1): ");
-      scanf("%d", &newStatus);
-      if (newStatus == ENTREGAR || newStatus == ENTREGUE)
+      while (1)
       {
-        {
-          aux->status = newStatus;
-        }
-
-        printf("Rota editada com sucesso\n");
+        printf("Digite o novo status da rota: (0 - Recebendo, 1 - Entregando, 2 - Finalizado)\n");
+        scanf("%d", &newStatus);
+        if (newStatus == 0)
+          aux->status = RECEBENDO;
+        else if (newStatus == 1)
+          aux->status = ENTREGANDO;
+        else if (newStatus == 2)
+          aux->status = FINALIZADO;
+        else
+          continue;
+        break;
       }
       aux = aux->prox;
     }
@@ -139,11 +151,12 @@ void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
   }
 }
 
-void liberarPilhaNaoEntregue(PilhaRotaNaoEfetuada *pilha){
+void liberarPilhaNaoEntregue(PilhaRotaNaoEfetuada *pilha)
+{
   RotaNaoEfetuada *aux = pilha->topo;
   RotaNaoEfetuada *temp;
 
-  while (aux!= NULL)
+  while (aux != NULL)
   {
     temp = aux;
     aux = aux->prox;

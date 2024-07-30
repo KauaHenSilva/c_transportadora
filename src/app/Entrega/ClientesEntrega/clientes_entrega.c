@@ -5,7 +5,6 @@
 
 
 void cadastrarCliente(ClienteEnvio **cliente) {
-    // Declarando variáveis para armazenar os dados do cliente
     int idCliente;
     char nome[100];
     char endereco[200];
