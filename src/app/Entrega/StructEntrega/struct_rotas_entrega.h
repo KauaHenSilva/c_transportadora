@@ -2,34 +2,33 @@
 
 #include <struct_info_entrega.h>
 
-typedef struct rotasNaoEfetuadas{
+typedef enum statusRota
+{
+  RECEBENDO = 0,
+  ENTREGANDO = 1,
+  FINALIZADO = 2,
+} StatusRota;
+
+typedef struct rotasNaoEfetuadas
+{
   int idRota;
-  char *nome;
-  int idCliente;
-  int status;
-  int tentativas;
+  StatusRota status;
 
-  DadosEnvio *dadosEnvio; // Aqui vai ser armazenado os endereços que vao ser tentados entregar
-
-  struct rotasNaoEfetuadas *ant; // Nesseario para ter acesso ao elemento anterior
+  ClienteEnvio *clientes;
+  struct rotasNaoEfetuadas *prox;
 } RotaNaoEfetuada;
 
-typedef struct pilhaRotaNaoEfetuada {
+typedef struct pilhaRotaNaoEfetuada
+{
   RotaNaoEfetuada *topo;
 } PilhaRotaNaoEfetuada;
-
-// Structs Rotas Para Entrega
 
 typedef struct rotaEntrega
 {
   int idRota;
-  char *nomeProduto;
-  char *endereco; // Temporario
-  int idCliente;
-  int status;
+  StatusRota status;
 
-  DadosEnvio *dadosEnvio; // Aqui vai ser armazenado os endereços que vao ser tentados entregar
-
+  ClienteEnvio *clientes;
   struct rotaEntrega *prox;
 } RotaEntrega;
 
@@ -38,3 +37,20 @@ typedef struct FilaRota
   RotaEntrega *inicio;
   RotaEntrega *fim;
 } FilaRota;
+
+
+typedef struct devolucao{
+  int idRota;
+  char *nomeProduto;
+  char *endereco;
+  int idCliente;
+  int status;
+  int tentativas;
+
+  struct devolucao *prox;
+} Devolucao;
+
+typedef struct filaDevolucao{
+  Devolucao *inicio;
+  Devolucao *fim;
+} FilaDevolucao;

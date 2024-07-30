@@ -1,5 +1,7 @@
 #pragma once
 
+#include <struct_rotas_entrega.h>
+
 void hello_word_devolucao();
 
 typedef struct devolucao{

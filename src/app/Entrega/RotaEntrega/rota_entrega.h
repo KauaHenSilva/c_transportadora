@@ -2,15 +2,14 @@
 
 #include <struct_rotas_entrega.h>
 
-void hello_word_rotas_entrega();
-
-void inputValoresRota(RotaEntrega *rotaPrencher); // Sem Test
-void listarRota(FilaRota *filaRota); // Sem Test
-
 void criarFilaRota(FilaRota *filaRota);
-void editarRota(FilaRota *filaRota, int idRota, RotaEntrega *newRota);
-void finalizarRota(FilaRota *filaRota);
+void creatRota(RotaEntrega *rota, ClienteEnvio *clientes);
 void inserirRota(FilaRota *filaRota, RotaEntrega *newRota);
-RotaEntrega* retornarRota(FilaRota *filaRota, int idRota);
+void listarRotas(FilaRota *filaRota);
+void editarRota(FilaRota *filaRota, int idRota, RotaEntrega *newRota);
+RotaEntrega *retornarRota(FilaRota *filaRota, int idRota);
+int finalizarRota(RotaEntrega *rota);
+void printRota(RotaEntrega *rota);
 
-void adicionarEntregasNaoEfetuadas(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota);
+void freeFilaRota(FilaRota *filaRota);
+void freeRotaEntrega(RotaEntrega *rota);
