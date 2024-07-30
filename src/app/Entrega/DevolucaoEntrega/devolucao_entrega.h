@@ -18,8 +18,8 @@ typedef struct filaDevolucao{
   Devolucao *fim;
 } FilaDevolucao;
 
-void inserirDevolucao(FilaDevolucao *fila, Devolucao *devolucao); // Flavio
+void inserirDevolucao(FilaDevolucao *fila, Devolucao *devolucao); // Flavio.feito
 void finalizarDevolucao(FilaDevolucao *fila); // Kaua
 void listarDevolucao(FilaDevolucao *fila); // Raisa
-void buscarDevolucao(FilaDevolucao *fila, int idRota); // Falvio
+void buscarDevolucao(FilaDevolucao *fila, int idRota); // Falvio. feito
 void editarDevolucao(FilaDevolucao *fila, int idRota); // Kaua
