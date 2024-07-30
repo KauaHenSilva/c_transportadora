@@ -6,18 +6,12 @@ project(
 )
 
 subdir('src/app/Entrega')
-subdir('src/app/Score')
 
 inc     = [inc_entrega]
 inc += inc_score
 
 libs     =  [lib_entrega]
 libs += lib_score
-
-subdir('src/tests')
-
-libs += lib_utils
-inc += inc_utils
 
 
 executable(
@@ -27,5 +21,3 @@ executable(
   include_directories: inc,
   install: true,
 )
-
-# Testes

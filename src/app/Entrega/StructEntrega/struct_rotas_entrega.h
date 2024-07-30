@@ -37,3 +37,20 @@ typedef struct FilaRota
   RotaEntrega *inicio;
   RotaEntrega *fim;
 } FilaRota;
+
+
+typedef struct devolucao{
+  int idRota;
+  char *nomeProduto;
+  char *endereco;
+  int idCliente;
+  int status;
+  int tentativas;
+
+  struct devolucao *prox;
+} Devolucao;
+
+typedef struct filaDevolucao{
+  Devolucao *inicio;
+  Devolucao *fim;
+} FilaDevolucao;
