@@ -19,8 +19,10 @@ typedef enum statusCliente
 typedef struct produto
 {
   int id;
-  char *nome;
-  struct produto *prox;
+  char *nomeProduto;
+  float preco;
+  int quantidade;
+  struct produto *proxProduto;
 } Produto;
 
 typedef struct clienteEnvio
