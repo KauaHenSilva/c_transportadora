@@ -2,33 +2,19 @@
 
 #include <struct_info_entrega.h>
 
-typedef enum statusRota
+typedef enum andamentoEntrega
 {
-  ROTA_RECEBENDO = 0,
-  ROTA_ENTREGANDO = 1,
-  ROTA_FINALIZADO = 2,
-} StatusRota;
-
-typedef struct rotasNaoEfetuadas
-{
-  int idRota;
-  StatusRota status;
-
-  Pacote *pacotes;
-  struct rotasNaoEfetuadas *prox;
-} RotaNaoEfetuada;
-
-typedef struct pilhaRotaNaoEfetuada
-{
-  RotaNaoEfetuada *topo;
-} PilhaRotaNaoEfetuada;
+  ENTREGA_EM_PROCESSO = 0, /**< O produto está em processo de entrega. */
+  ENTREGA_FINALIZADO = 1,  /**< O produto foi entregue. */
+} AndamentoEntrega;
 
 typedef struct rotaEntrega
 {
   int idRota;
-  StatusRota status;
+  AndamentoEntrega andamentoEntrega;
 
-  Pacote *pacotes;
+  Pacote *pacote;
+
   struct rotaEntrega *prox;
 } RotaEntrega;
 
@@ -38,11 +24,29 @@ typedef struct FilaRotaEntrega
   RotaEntrega *fim;
 } FilaRotaEntrega;
 
+typedef struct segundaTentativaEntega
+{
+  int idRota;
+  int idRotaOriginal;
+  AndamentoEntrega andamentoEntrega;
+
+  Produto *produto;
+
+  struct rotasNaoEfetuadas *prox;
+} SegundaTentativaEntega;
+
+typedef struct pilhaSegundaTentativaEntega
+{
+  SegundaTentativaEntega *topo;
+} PilhaSegundaTentativaEntega;
+
 typedef struct devolucao
 {
   int idRota;
-  StatusRota status;
-  Pacote *pacotes;
+  int idRotaOriginal;
+  AndamentoEntrega andamentoEntrega;
+
+  Produto *produto;
 
   struct devolucao *prox;
 } Devolucao;

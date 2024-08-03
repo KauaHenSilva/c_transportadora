@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 extern FilaRotaEntrega filaRotaEntrega;
-extern PilhaRotaNaoEfetuada pilhaRotaNaoEntregue;
+extern PilhaSegundaTentativaEntega pilhaRotaNaoEntregue;
 extern ClienteEnvio *allClientes;
 
 void menuRotaEntrega()
@@ -19,12 +19,11 @@ void menuRotaEntrega()
   do
   {
     system("clear || cls");
-    printf("1 - Cadrastrar rota\n");
-    printf("2 - Listar rotas\n");
-    printf("3 - Adicionar produto a rota\n");
-    printf("4 - Iniciar rota\n");
+    printf("1 - Adicionar produto a rota\n");
+    printf("2 - Listar rota\n");
+    printf("3 - Iniciar rota\n");
     printf("0 - Sair\n");
-    get_int(&opcao, "Digite a opcao desejada: ", 0, 4);
+    get_int(&opcao, "Digite a opcao desejada: ", 0, 3);
 
     switch (opcao)
     {
@@ -32,17 +31,17 @@ void menuRotaEntrega()
     {
       break;
     }
-    case CADASTRAR_ROTA:
-    {
-      RotaEntrega *rota = malloc(sizeof(RotaEntrega));
-      Pacote *pacote = NULL;
+    // case CADASTRAR_ROTA:
+    // {
+    //   RotaEntrega *rota = malloc(sizeof(RotaEntrega));
+    //   Pacote *pacote = NULL;
 
-      criarRotaEntrega(rota, pacote);
-      inserirRota(&filaRotaEntrega, rota);
+    //   criarRotaEntrega(rota, pacote);
+    //   inserirRota(&filaRotaEntrega, rota);
 
-      printf("Rota %d cadastrada com sucesso.\n", rota->idRota);
-      break;
-    }
+    //   printf("Rota %d cadastrada com sucesso.\n", rota->idRota);
+    //   break;
+    // }
     case LISTAR_ROTAS:
     {
       printf("\nRotas cadastradas:\n");
@@ -52,11 +51,6 @@ void menuRotaEntrega()
     }
     case ADICIONAR_PRODUTO:
     {
-      if (filaRotaEntrega.inicio == NULL)
-      {
-        printf("Nenhuma rota cadastrada.\n");
-        break;
-      }
 
       Produto *produto = cadrastrarProduto(allClientes);
       if (!produto)

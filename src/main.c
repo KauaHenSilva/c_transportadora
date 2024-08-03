@@ -10,7 +10,7 @@
 
 ClienteEnvio *allClientes = NULL;
 FilaRotaEntrega filaRotaEntrega;
-PilhaRotaNaoEfetuada pilhaRotaNaoEntregue;
+PilhaSegundaTentativaEntega pilhaSegundaTentativaEntega;
 
 int main()
 {
@@ -20,7 +20,6 @@ int main()
 
   freeFilaRota(&filaRotaEntrega);
   freeClientes(&allClientes);
-  
 
   return 0;
 }

@@ -205,7 +205,6 @@ Produto *cadrastrarProduto(ClienteEnvio *cliente)
     get_string(&novoProduto->nome, "Digite o nome do produto: ");
     novoProduto->id_produto = idProduto++;
     novoProduto->cliente = clienteSelecionado;
-    novoProduto->andamento = ENTREGA_EM_PROCESSO;
     novoProduto->prox = NULL;
 
     return novoProduto;

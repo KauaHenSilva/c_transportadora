@@ -3,25 +3,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-PilhaRotaNaoEfetuada *criarPilhaNaoEntregue()
+static int idRoutaSegundaEntregaCont = 1;
+
+PilhaSegundaTentativaEntega *criarPilhaNaoEntregue()
 {
-  PilhaRotaNaoEfetuada *novo = (PilhaRotaNaoEfetuada *)malloc(sizeof(PilhaRotaNaoEfetuada));
+  PilhaSegundaTentativaEntega *novo = (PilhaSegundaTentativaEntega *)malloc(sizeof(PilhaSegundaTentativaEntega));
   novo->topo = NULL;
   return novo;
 }
 
-void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota)
+void inserirRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, Produto *produto, int id_rota_original)
 {
-  // RotaNaoEfetuada *novo = malloc(sizeof(RotaEntrega));
-  // novo->idRota = rota->idRota;
-  // novo->pacotes = rota->clientes;
-  // novo->status = RECEBENDO;
+  SegundaTentativaEntega *novo = (SegundaTentativaEntega *)malloc(sizeof(SegundaTentativaEntega));
+  novo->idRota = idRoutaSegundaEntregaCont++;
+  novo->idRotaOriginal = id_rota_original;
+  novo->produto = produto;
+  novo->andamentoEntrega = ENTREGA_EM_PROCESSO;
 
-  // novo->prox = pilha->topo;
-  // pilha->topo = novo;
+  novo->prox = pilha->topo;
+  pilha->topo = novo;
 }
 
-void removerPedido(PilhaRotaNaoEfetuada *pilha)
+void removerPedido(PilhaSegundaTentativaEntega *pilha)
 {
   // if (pilha == NULL || pilha->topo == NULL)
   // {
@@ -63,7 +66,7 @@ void removerPedido(PilhaRotaNaoEfetuada *pilha)
   // }
 }
 
-void listarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha)
+void listarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha)
 {
   // if (pilha == NULL || pilha->topo == NULL)
   // {
@@ -88,7 +91,7 @@ void listarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha)
   // }
 }
 
-void buscarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
+void buscarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
 {
   // if (pilha == NULL || pilha->topo == NULL)
   // {
@@ -114,7 +117,7 @@ void buscarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
   // printf("Rota com ID %d nao encontrada.\n", idRota);
 }
 
-void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
+void editarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
 {
   // if (pilha == NULL || pilha->topo == NULL)
   // {
@@ -151,7 +154,7 @@ void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
   // }
 }
 
-void liberarPilhaNaoEntregue(PilhaRotaNaoEfetuada *pilha)
+void liberarPilhaNaoEntregue(PilhaSegundaTentativaEntega *pilha)
 {
   // RotaNaoEfetuada *aux = pilha->topo;
   // RotaNaoEfetuada *temp;

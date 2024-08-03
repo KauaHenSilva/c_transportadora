@@ -6,6 +6,7 @@ inc_rota_entrega = include_directories('RotaEntrega')
 inc_rota_segunda_entrega = include_directories('RotaSegundaEntrega')
 inc_devolucao_entrega = include_directories('DevolucaoEntrega')
 inc_score = include_directories('Score')
+inc_pacote = include_directories('Pacote')
 
 subdir('PrintStruct')
 subdir('ClientesEntrega')
@@ -14,6 +15,7 @@ subdir('RotaSegundaEntrega')
 subdir('DevolucaoEntrega')
 subdir('Score')
 subdir('Menu')
+subdir('Pacote')
 
 inc_entrega = [
   inc_print_struct,
@@ -24,6 +26,7 @@ inc_entrega = [
   inc_struct_entrega,
   inc_score,
   inc_menu,
+  inc_pacote,
 ]
 
 lib_entrega = [
@@ -34,4 +37,5 @@ lib_entrega = [
   lib_devolucao_entrega,
   lib_score,
   lib_menu,
+  lib_pacote,
 ]

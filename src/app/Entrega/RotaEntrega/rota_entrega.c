@@ -1,13 +1,14 @@
 #include <rota_entrega.h>
 #include <rota_segunda_entrega.h>
 #include <print_struct.h>
+#include <pacote.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <utils.h>
 
-int idRoutaCont = 1;
-int idPacoteCont = 1;
+static int idRoutaCont = 1;
 
 void criarFilaRotaEntrega(FilaRotaEntrega *filaRota)
 {
@@ -17,10 +18,10 @@ void criarFilaRotaEntrega(FilaRotaEntrega *filaRota)
 
 void criarRotaEntrega(RotaEntrega *rotaEntrega, Pacote *pacote)
 {
-  rotaEntrega->pacotes = pacote;
-  rotaEntrega->prox = NULL;
-  rotaEntrega->status = ROTA_RECEBENDO;
   rotaEntrega->idRota = idRoutaCont++;
+  rotaEntrega->pacote = pacote;
+  rotaEntrega->prox = NULL;
+  rotaEntrega->andamentoEntrega = ENTREGA_EM_PROCESSO;
 }
 
 void inserirRota(FilaRotaEntrega *filaRotaEntrega, RotaEntrega *newRota)
@@ -43,93 +44,28 @@ void inserirProdutoRota(FilaRotaEntrega *filaRotaEntrega, Produto *produto)
   RotaEntrega *aux = filaRotaEntrega->inicio;
   while (aux != NULL)
   {
-    if (aux->status == ROTA_FINALIZADO)
+    if (aux->pacote->endereco == produto->cliente->endereco)
     {
-      aux = aux->prox;
-      continue;
-    }
-    if (aux->status == ROTA_ENTREGANDO)
-    {
-      aux = aux->prox;
-      continue;
-    }
-
-    Pacote *auxPacote = aux->pacotes;
-
-    if (auxPacote == NULL)
-    {
-      Pacote *pacote = malloc(sizeof(Pacote));
-      pacote->id_pacote = idPacoteCont++;
-      pacote->endereco = produto->cliente->endereco;
-      pacote->produtos = produto;
-      pacote->prox = NULL;
-
-      aux->pacotes = pacote;
-      return;
-    }
-
-    while (auxPacote->prox != NULL)
-    {
-      if (strcmp(auxPacote->endereco, produto->cliente->endereco) == 0)
-      {
-        Produto *auxProduto = auxPacote->produtos;
-        while (auxProduto->prox != NULL)
-          auxProduto = auxProduto->prox;
-
-        auxProduto->prox = produto;
-        return;
-      }
-
-      auxPacote = auxPacote->prox;
-    }
-
-    // Caso o ultimo pacote tenha o mesmo endereço
-    if (strcmp(auxPacote->endereco, produto->cliente->endereco) == 0)
-    {
-      Produto *auxProduto = auxPacote->produtos;
+      Produto *auxProduto = aux->pacote->produtos;
       while (auxProduto->prox != NULL)
         auxProduto = auxProduto->prox;
 
       auxProduto->prox = produto;
-      return;
+      break;
     }
-
-    // Caso não tenha nenhum pacote com o mesmo endereço
-    Pacote *pacote = malloc(sizeof(Pacote));
-    pacote->id_pacote = idPacoteCont++;
-    pacote->endereco = produto->cliente->endereco;
-    pacote->produtos = produto;
-    pacote->prox = NULL;
-
-    auxPacote->prox = pacote;
     aux = aux->prox;
   }
 
-  printf("Nenhuma rota disponivel para adicionar produto\n");
-}
-
-int finalizarRota(RotaEntrega *rota)
-{
-  Pacote *aux = rota->pacotes;
-  while (aux != NULL)
+  if (aux == NULL)
   {
-    Produto *auxProduto = aux->produtos;
-    while (auxProduto != NULL)
-    {
-      if (auxProduto->status != ENTREGAR_A_CLINETE && auxProduto->andamento != ENTREGA_FINALIZADO)
-      {
-        printf("O produto %s do cliente %d foi correpondido com o status %d\n", auxProduto->nome, auxProduto->cliente->idCliente, auxProduto->status);
-        printf("O produto %s do cliente %d não foi entregue\n", auxProduto->nome, auxProduto->cliente->idCliente);
-        return 0;
-      }
-      auxProduto = auxProduto->prox;
-    }
-    aux = aux->prox;
-  }
+    Pacote *pacote = criar_pacote(produto);
 
-  printf("Todos os clientes foram atendidos\n");
-  rota->status = ROTA_FINALIZADO;
-  return 1;
+    RotaEntrega *rota = malloc(sizeof(RotaEntrega));
+    criarRotaEntrega(rota, pacote);
+    inserirRota(filaRotaEntrega, rota);
+
+    printf("Rota %d cadastrada com sucesso.\n", rota->idRota);
+  }
 }
 
 void listarRotas(FilaRotaEntrega *filaRotaEntrega)
@@ -185,12 +121,13 @@ void freeFilaRota(FilaRotaEntrega *filaRotaEntrega)
 
 void freeRotaEntrega(RotaEntrega *rota)
 {
-  Pacote *aux = rota->pacotes;
+  Pacote *aux = rota->pacote;
   while (aux != NULL)
   {
-    rota->pacotes = rota->pacotes->prox;
-    free(aux);
-    aux = rota->pacotes;
+    rota->pacote = rota->pacote;
+    freePacote(aux);
+    free(aux->endereco);
+    aux = rota->pacote;
   }
 
   free(rota);
@@ -198,52 +135,56 @@ void freeRotaEntrega(RotaEntrega *rota)
 
 void iniciarRota(FilaRotaEntrega *filaRotaEntrega)
 {
-  RotaEntrega *rotaIniciar = filaRotaEntrega->inicio;
-  while (rotaIniciar != NULL)
+  if (filaRotaEntrega->inicio == NULL)
   {
-    if (rotaIniciar->status == ROTA_RECEBENDO)
-    {
-      rotaIniciar->status = ROTA_ENTREGANDO;
-      break;
-    }
-    rotaIniciar = rotaIniciar->prox;
+    printf("Fila vazia\n");
+    return;
   }
 
-  if (rotaIniciar == NULL)
+  RotaEntrega *aux = filaRotaEntrega->inicio;
+  
+  while (aux != NULL)
   {
-    printf("Nenhuma rota disponivel para iniciar\n");
-  }
-
-  // Entregar pacotes
-  Pacote *auxPacote = rotaIniciar->pacotes;
-  while (auxPacote != NULL)
-  {
-    for (Produto *produto = auxPacote->produtos; produto != NULL; produto = produto->prox)
+    Pacote *auxPacote = aux->pacote;
+    Produto *auxProduto = auxPacote->produtos;
+    while (auxProduto != NULL)
     {
-      if (strcmp(produto->cliente->endereco, auxPacote->endereco) == 1)
+      if (strcmp(auxProduto->cliente->endereco, auxPacote->endereco) == 1)
       {
-        printf("O cliente %d não recebeu o produto %s pois o endereço não confere com o do sistema.\n", produto->cliente->idCliente, produto->nome);
-        printf("Alguem recebeu o produto no lugar do cliente %d?\n", produto->cliente->idCliente);
-        printf("1 - Sim\n");
-        printf("2 - Não\n");
+        printf("O endereco do produto %d é diferente do endereco do pacote %d\n", auxProduto->id_produto, auxPacote->id_pacote);
+        printf("Alguém recebeu o pacote para o cliente %d?\n", auxProduto->cliente->idCliente);
       }
       else
       {
-        printf("O cliente %d recebeu o produto %s?\n", produto->cliente->idCliente, produto->nome);
-        printf("1 - Sim\n");
-        printf("2 - Não\n");
+        printf("O produto %d foi entregue para o cliente %d?\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
       }
 
-      int opcao;
-      get_int(&opcao, "Digite a opcao desejada: ", 1, 2);
+      printf("1 - Sim\n");
+      printf("2 - Não\n");
+      int status;
+      get_int(&status, "Digite a opção desejada: ", 1, 2);
 
-      if (opcao == 1)
-        produto->andamento = ENTREGA_FINALIZADO;
+      if (status == 2)
+      {
+        printf("O produto %d não foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
+        printf("O produto será adicionado a pilha da segunda tentativa\n");
+        Produto *produtoExcluido = auxProduto;
+        auxPacote->produtos = auxProduto;
+        free(produtoExcluido);
+        printf("MENSAGEN DEV: O produto só foi excluido mande para a pilha da segunda tentativa.\n");
+      }
       else
-        produto->status = REENTREGAR_A_CLINETE;
+      {
+        printf("O produto %d foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
+        Produto *produtoExcluido = auxProduto;
+        auxPacote->produtos = auxProduto;
+        free(produtoExcluido);
+        printf("MENSAGEN DEV: O produto só foi excluido mande para o historico para fazer o score.\n");
+      }
+      auxProduto = auxProduto->prox;
     }
-    auxPacote = auxPacote->prox;
+    aux = aux->prox;
   }
 
-  finalizarRota(rotaIniciar);
+  filaRotaEntrega->inicio = aux;
 }

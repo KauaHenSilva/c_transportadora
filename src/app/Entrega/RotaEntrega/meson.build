@@ -6,6 +6,7 @@ lib_rota_entrega = static_library(
     inc_rota_segunda_entrega,
     inc_print_struct,
     inc_utils,
+    inc_pacote,
   ],
   install: true,
 )

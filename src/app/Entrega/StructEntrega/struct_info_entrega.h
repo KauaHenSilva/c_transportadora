@@ -16,12 +16,6 @@ typedef enum statusProduto
   DEVOLVER_A_REMETENTE = 2, /**< O produto deve ser devolvido ao remetente. */
 } StatusProduto;
 
-typedef enum andamentoEntrega
-{
-  ENTREGA_EM_PROCESSO = 0, /**< O produto está em processo de entrega. */
-  ENTREGA_FINALIZADO = 1,  /**< O produto foi entregue. */
-} AndamentoEntrega;
-
 typedef struct clienteEnvio
 {
   int idCliente;
@@ -39,7 +33,6 @@ typedef struct produto
   char *nome;
 
   StatusProduto status;
-  AndamentoEntrega andamento;
   struct produto *prox;
 } Produto;
 
@@ -48,6 +41,4 @@ typedef struct pacote
   int id_pacote;
   char *endereco;
   Produto *produtos;
-
-  struct pacote *prox;
 } Pacote;
