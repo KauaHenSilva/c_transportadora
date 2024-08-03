@@ -12,156 +12,156 @@ PilhaRotaNaoEfetuada *criarPilhaNaoEntregue()
 
 void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota)
 {
-  RotaNaoEfetuada *novo = malloc(sizeof(RotaEntrega));
-  novo->idRota = rota->idRota;
-  novo->clientes = rota->clientes;
-  novo->status = RECEBENDO;
+  // RotaNaoEfetuada *novo = malloc(sizeof(RotaEntrega));
+  // novo->idRota = rota->idRota;
+  // novo->pacotes = rota->clientes;
+  // novo->status = RECEBENDO;
 
-  novo->prox = pilha->topo;
-  pilha->topo = novo;
+  // novo->prox = pilha->topo;
+  // pilha->topo = novo;
 }
 
 void removerPedido(PilhaRotaNaoEfetuada *pilha)
 {
-  if (pilha == NULL || pilha->topo == NULL)
-  {
-    printf("A pilha esta vazia ou nao foi inicializada!\n");
-  }
-  else
-  {
-    int idCliente = pilha->topo->clientes->idCliente;
-    RotaNaoEfetuada *aux = pilha->topo;
-    RotaNaoEfetuada *anterior = NULL;
+  // if (pilha == NULL || pilha->topo == NULL)
+  // {
+  //   printf("A pilha esta vazia ou nao foi inicializada!\n");
+  // }
+  // else
+  // {
+  //   int idCliente = pilha->topo->clientes->idCliente;
+  //   RotaNaoEfetuada *aux = pilha->topo;
+  //   RotaNaoEfetuada *anterior = NULL;
 
-    int cont = 0;
+  //   int cont = 0;
 
-    while (aux != NULL)
-    {
-      if (aux->clientes->idCliente == idCliente)
-      {
-        if (anterior == NULL)
-        {
-          pilha->topo = aux->prox;
-        }
-        else
-        {
-          anterior->prox = aux->prox;
-        }
-        RotaNaoEfetuada *temp = aux;
-        aux = aux->prox;
-        free(temp->clientes);
-        free(temp);
-        cont++;
-      }
-      else
-      {
-        anterior = aux;
-        aux = aux->prox;
-      }
-    }
-    printf("O cliente com ID %d recebeu %d pedidos.\n", idCliente, cont);
-  }
+  //   while (aux != NULL)
+  //   {
+  //     if (aux->clientes->idCliente == idCliente)
+  //     {
+  //       if (anterior == NULL)
+  //       {
+  //         pilha->topo = aux->prox;
+  //       }
+  //       else
+  //       {
+  //         anterior->prox = aux->prox;
+  //       }
+  //       RotaNaoEfetuada *temp = aux;
+  //       aux = aux->prox;
+  //       free(temp->clientes);
+  //       free(temp);
+  //       cont++;
+  //     }
+  //     else
+  //     {
+  //       anterior = aux;
+  //       aux = aux->prox;
+  //     }
+  //   }
+  //   printf("O cliente com ID %d recebeu %d pedidos.\n", idCliente, cont);
+  // }
 }
 
 void listarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha)
 {
-  if (pilha == NULL || pilha->topo == NULL)
-  {
-    printf("A pilha esta vazia!\n");
-  }
-  else
-  {
-    RotaNaoEfetuada *aux = pilha->topo;
-    printf("---- Rotas Nao Efetuadas ----\n");
-    while (aux != NULL)
-    {
-      printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
-      printf("Status da Rota: %s\n", aux->status == ENTREGANDO
-                                         ? "Entregando"
-                                     : aux->status == FINALIZADO
-                                         ? "Entregue"
-                                         : "Recebendo");
+  // if (pilha == NULL || pilha->topo == NULL)
+  // {
+  //   printf("A pilha esta vazia!\n");
+  // }
+  // else
+  // {
+  //   RotaNaoEfetuada *aux = pilha->topo;
+  //   printf("---- Rotas Nao Efetuadas ----\n");
+  //   while (aux != NULL)
+  //   {
+  //     printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
+  //     printf("Status da Rota: %s\n", aux->status == ENTREGANDO
+  //                                        ? "Entregando"
+  //                                    : aux->status == FINALIZADO
+  //                                        ? "Entregue"
+  //                                        : "Recebendo");
 
-      aux = aux->prox;
-    }
-    printf("-----------------------------\n");
-  }
+  //     aux = aux->prox;
+  //   }
+  //   printf("-----------------------------\n");
+  // }
 }
 
 void buscarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
 {
-  if (pilha == NULL || pilha->topo == NULL)
-  {
-    printf("A pilha esta vazia!\n");
-    return;
-  }
-  RotaNaoEfetuada *aux = pilha->topo;
-  while (aux != NULL)
-  {
-    if (aux->idRota == idRota)
-    {
-      printf("Rota encontrada:\n");
-      printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
-      printf("Status da Rota: %s\n", aux->status == ENTREGANDO
-                                         ? "Entregando"
-                                     : aux->status == FINALIZADO
-                                         ? "Entregue"
-                                         : "Recebendo");
-      return;
-    }
-    aux = aux->prox;
-  }
-  printf("Rota com ID %d nao encontrada.\n", idRota);
+  // if (pilha == NULL || pilha->topo == NULL)
+  // {
+  //   printf("A pilha esta vazia!\n");
+  //   return;
+  // }
+  // RotaNaoEfetuada *aux = pilha->topo;
+  // while (aux != NULL)
+  // {
+  //   if (aux->idRota == idRota)
+  //   {
+  //     printf("Rota encontrada:\n");
+  //     printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
+  //     printf("Status da Rota: %s\n", aux->status == ENTREGANDO
+  //                                        ? "Entregando"
+  //                                    : aux->status == FINALIZADO
+  //                                        ? "Entregue"
+  //                                        : "Recebendo");
+  //     return;
+  //   }
+  //   aux = aux->prox;
+  // }
+  // printf("Rota com ID %d nao encontrada.\n", idRota);
 }
 
 void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, int idRota)
 {
-  if (pilha == NULL || pilha->topo == NULL)
-  {
-    printf("A pilha esta vazia!\n");
-    return;
-  }
-  RotaNaoEfetuada *aux = pilha->topo;
-  while (aux != NULL)
-  {
-    if (aux->idRota == idRota)
-    {
-      int newStatus;
-      printf("ID da rota a ser editada: %d\n", aux->idRota);
-      while (1)
-      {
-        printf("Digite o novo status da rota: (0 - Recebendo, 1 - Entregando, 2 - Finalizado)\n");
-        scanf("%d", &newStatus);
-        if (newStatus == 0)
-          aux->status = RECEBENDO;
-        else if (newStatus == 1)
-          aux->status = ENTREGANDO;
-        else if (newStatus == 2)
-          aux->status = FINALIZADO;
-        else
-          continue;
-        break;
-      }
-      aux = aux->prox;
-    }
-    else
-    {
-      printf("Rota nao efetuada nao encontrada\n");
-    }
-  }
+  // if (pilha == NULL || pilha->topo == NULL)
+  // {
+  //   printf("A pilha esta vazia!\n");
+  //   return;
+  // }
+  // RotaNaoEfetuada *aux = pilha->topo;
+  // while (aux != NULL)
+  // {
+  //   if (aux->idRota == idRota)
+  //   {
+  //     int newStatus;
+  //     printf("ID da rota a ser editada: %d\n", aux->idRota);
+  //     while (1)
+  //     {
+  //       printf("Digite o novo status da rota: (0 - Recebendo, 1 - Entregando, 2 - Finalizado)\n");
+  //       scanf("%d", &newStatus);
+  //       if (newStatus == 0)
+  //         aux->status = RECEBENDO;
+  //       else if (newStatus == 1)
+  //         aux->status = ENTREGANDO;
+  //       else if (newStatus == 2)
+  //         aux->status = FINALIZADO;
+  //       else
+  //         continue;
+  //       break;
+  //     }
+  //     aux = aux->prox;
+  //   }
+  //   else
+  //   {
+  //     printf("Rota nao efetuada nao encontrada\n");
+  //   }
+  // }
 }
 
 void liberarPilhaNaoEntregue(PilhaRotaNaoEfetuada *pilha)
 {
-  RotaNaoEfetuada *aux = pilha->topo;
-  RotaNaoEfetuada *temp;
+  // RotaNaoEfetuada *aux = pilha->topo;
+  // RotaNaoEfetuada *temp;
 
-  while (aux != NULL)
-  {
-    temp = aux;
-    aux = aux->prox;
-    free(temp->clientes);
-    free(temp);
-  }
-  free(pilha);
+  // while (aux != NULL)
+  // {
+  //   temp = aux;
+  //   aux = aux->prox;
+  //   free(temp->clientes);
+  //   free(temp);
+  // }
+  // free(pilha);
 }

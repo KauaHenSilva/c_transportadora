@@ -5,14 +5,14 @@ project(
   default_options: ['warning_level=3'],
 )
 
+subdir('src/app/utils')
 subdir('src/app/Entrega')
 
-inc     = [inc_entrega]
-inc += inc_score
+inc = [inc_utils]
+inc += inc_entrega
 
-libs     =  [lib_entrega]
-libs += lib_score
-
+libs = [lib_utils]
+libs += lib_entrega
 
 executable(
   'Tranportadora',

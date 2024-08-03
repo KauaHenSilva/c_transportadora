@@ -4,9 +4,9 @@
 
 typedef enum statusRota
 {
-  RECEBENDO = 0,
-  ENTREGANDO = 1,
-  FINALIZADO = 2,
+  ROTA_RECEBENDO = 0,
+  ROTA_ENTREGANDO = 1,
+  ROTA_FINALIZADO = 2,
 } StatusRota;
 
 typedef struct rotasNaoEfetuadas
@@ -14,7 +14,7 @@ typedef struct rotasNaoEfetuadas
   int idRota;
   StatusRota status;
 
-  ClienteEnvio *clientes;
+  Pacote *pacotes;
   struct rotasNaoEfetuadas *prox;
 } RotaNaoEfetuada;
 
@@ -28,29 +28,27 @@ typedef struct rotaEntrega
   int idRota;
   StatusRota status;
 
-  ClienteEnvio *clientes;
+  Pacote *pacotes;
   struct rotaEntrega *prox;
 } RotaEntrega;
 
-typedef struct FilaRota
+typedef struct FilaRotaEntrega
 {
   RotaEntrega *inicio;
   RotaEntrega *fim;
-} FilaRota;
+} FilaRotaEntrega;
 
-
-typedef struct devolucao{
+typedef struct devolucao
+{
   int idRota;
-  char *nomeProduto;
-  char *endereco;
-  int idCliente;
-  int status;
-  int tentativas;
+  StatusRota status;
+  Pacote *pacotes;
 
   struct devolucao *prox;
 } Devolucao;
 
-typedef struct filaDevolucao{
+typedef struct filaDevolucao
+{
   Devolucao *inicio;
   Devolucao *fim;
 } FilaDevolucao;
