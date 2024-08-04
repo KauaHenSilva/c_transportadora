@@ -58,6 +58,13 @@ void printCliente(ClienteEnvio *cliente)
   printf("\t-Endereco: %s\n", cliente->endereco);
 }
 
+void printProduto(Produto *produto)
+{
+  printf("\t ID Produto: %d\n", produto->id_produto);
+  printf("\t ID Cliente: %d\n", produto->cliente->idCliente);
+  printf("\t Nome Produto: %s\n", produto->nome);
+}
+
 void printPacote(Pacote *pacote)
 {
   printf("\t\t- ID Pacote: %d\n", pacote->id_pacote);

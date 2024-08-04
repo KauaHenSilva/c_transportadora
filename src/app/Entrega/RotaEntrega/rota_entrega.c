@@ -133,7 +133,7 @@ void freeRotaEntrega(RotaEntrega *rota)
   free(rota);
 }
 
-void iniciarRota(FilaRotaEntrega *filaRotaEntrega)
+void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *pilha)
 {
   if (filaRotaEntrega->inicio == NULL)
   {
@@ -141,8 +141,14 @@ void iniciarRota(FilaRotaEntrega *filaRotaEntrega)
     return;
   }
 
+  if (pilha->topo != NULL)
+  {
+    printf("A pilha da segunda tentativa não está vazia, por favor, limpe a pilha antes de iniciar a rota\n");
+    return;
+  }
+
   RotaEntrega *aux = filaRotaEntrega->inicio;
-  
+
   while (aux != NULL)
   {
     Pacote *auxPacote = aux->pacote;
@@ -164,22 +170,21 @@ void iniciarRota(FilaRotaEntrega *filaRotaEntrega)
       int status;
       get_int(&status, "Digite a opção desejada: ", 1, 2);
 
-      if (status == 2)
-      {
-        printf("O produto %d não foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
-        printf("O produto será adicionado a pilha da segunda tentativa\n");
-        Produto *produtoExcluido = auxProduto;
-        auxPacote->produtos = auxProduto;
-        free(produtoExcluido);
-        printf("MENSAGEN DEV: O produto só foi excluido mande para a pilha da segunda tentativa.\n");
-      }
-      else
+      if (status == 1)
       {
         printf("O produto %d foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
         Produto *produtoExcluido = auxProduto;
         auxPacote->produtos = auxProduto;
         free(produtoExcluido);
         printf("MENSAGEN DEV: O produto só foi excluido mande para o historico para fazer o score.\n");
+      }
+      else
+      {
+        printf("O produto %d não foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
+        printf("O produto será adicionado a pilha da segunda tentativa\n");
+        Produto *produtoEnviar = auxProduto;
+        auxPacote->produtos = auxProduto;
+        inserirRotaNaoEfetuada(pilha, produtoEnviar, aux->idRota);
       }
       auxProduto = auxProduto->prox;
     }

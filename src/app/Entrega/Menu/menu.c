@@ -2,6 +2,7 @@
 #include <struct_info_entrega.h>
 #include <struct_rotas_entrega.h>
 #include <rota_entrega.h>
+#include <rota_segunda_entrega.h>
 #include <clientes_entrega.h>
 #include <print_struct.h>
 #include <utils.h>
@@ -10,7 +11,8 @@
 #include <stdlib.h>
 
 extern FilaRotaEntrega filaRotaEntrega;
-extern PilhaSegundaTentativaEntega pilhaRotaNaoEntregue;
+extern PilhaSegundaTentativaEntega pilhaSegundaTentativaEntega;
+
 extern ClienteEnvio *allClientes;
 
 void menuRotaEntrega()
@@ -61,7 +63,7 @@ void menuRotaEntrega()
     }
     case INICIAR_ROTA:
     {
-      iniciarRota(&filaRotaEntrega);
+      iniciarRota(&filaRotaEntrega, &pilhaSegundaTentativaEntega);
       break;
     }
     }
@@ -138,13 +140,12 @@ void menuSegundaEntrega()
     }
     case LISTAR_SEGUNDA_ENTREGA:
     {
-      printf("\nRotas não efetuadas:\n");
-      // listarRotasNaoEfetuadas(&filaRotaNaoEfetuada);
-      printf("\n");
+      listarPilhaSegundaTentativaEntega(&pilhaSegundaTentativaEntega);
       break;
     }
     case INICIAR_SEGUNDA_ENTREGA:
     {
+      printf("Não implementado\n");
       // iniciarSegundaEntrega(&filaRotaNaoEfetuada);
       break;
     }
@@ -161,8 +162,9 @@ void menuDosMenus()
     system("clear || cls");
     printf("1 - Menu de clientes\n");
     printf("2 - Menu de rotas\n");
+    printf("3 - Menu de segunda entrega\n");
     printf("0 - Sair\n");
-    get_int(&opcao, "Digite a opcao desejada: ", 0, 2);
+    get_int(&opcao, "Digite a opcao desejada: ", 0, 3);
 
     switch (opcao)
     {
@@ -178,6 +180,11 @@ void menuDosMenus()
     case MENU_ROTA_ENTREGA:
     {
       menuRotaEntrega();
+      break;
+    }
+    case MENU_SEGUNDA_ENTREGA:
+    {
+      menuSegundaEntrega();
       break;
     }
     }

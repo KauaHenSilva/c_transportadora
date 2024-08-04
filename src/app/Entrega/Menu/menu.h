@@ -32,6 +32,7 @@ enum enMenuDosMenus
   SAIR_MENU_DOS_MENUS,
   MENU_CLIENTE,
   MENU_ROTA_ENTREGA,
+  MENU_SEGUNDA_ENTREGA,
 };
 
 void menuRotaEntrega();

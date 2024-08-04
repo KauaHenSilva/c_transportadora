@@ -2,14 +2,14 @@
 #include <rota_segunda_entrega.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <print_struct.h>
 
 static int idRoutaSegundaEntregaCont = 1;
 
-PilhaSegundaTentativaEntega *criarPilhaNaoEntregue()
+void criarPilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
 {
-  PilhaSegundaTentativaEntega *novo = (PilhaSegundaTentativaEntega *)malloc(sizeof(PilhaSegundaTentativaEntega));
-  novo->topo = NULL;
-  return novo;
+  pilha = (PilhaSegundaTentativaEntega *)malloc(sizeof(PilhaSegundaTentativaEntega));
+  pilha->topo = NULL;
 }
 
 void inserirRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, Produto *produto, int id_rota_original)
@@ -66,29 +66,27 @@ void removerPedido(PilhaSegundaTentativaEntega *pilha)
   // }
 }
 
-void listarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha)
+void listarPilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
 {
-  // if (pilha == NULL || pilha->topo == NULL)
-  // {
-  //   printf("A pilha esta vazia!\n");
-  // }
-  // else
-  // {
-  //   RotaNaoEfetuada *aux = pilha->topo;
-  //   printf("---- Rotas Nao Efetuadas ----\n");
-  //   while (aux != NULL)
-  //   {
-  //     printf("ID da Rota: %d, ID do Cliente: %d\n", aux->idRota, aux->clientes->idCliente);
-  //     printf("Status da Rota: %s\n", aux->status == ENTREGANDO
-  //                                        ? "Entregando"
-  //                                    : aux->status == FINALIZADO
-  //                                        ? "Entregue"
-  //                                        : "Recebendo");
+  if (pilha == NULL || pilha->topo == NULL)
+  {
+    printf("A pilha esta vazia!\n");
+  }
+  else
+  {
+    SegundaTentativaEntega *aux = pilha->topo;
+    while (aux != NULL)
+    {
+      printf("ID do Produto: %d\n", aux->produto->id_produto);
+      if (aux->andamentoEntrega == ENTREGA_EM_PROCESSO)
+        printf("Status da Rota: Entrega em Processo\n");
+      else
+        printf("Status da Rota: Entrega Finalizada\n");
 
-  //     aux = aux->prox;
-  //   }
-  //   printf("-----------------------------\n");
-  // }
+      printProduto(aux->produto);
+      aux = aux->prox;
+    }
+  }
 }
 
 void buscarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
@@ -154,17 +152,19 @@ void editarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
   // }
 }
 
-void liberarPilhaNaoEntregue(PilhaSegundaTentativaEntega *pilha)
+void freePilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
 {
-  // RotaNaoEfetuada *aux = pilha->topo;
-  // RotaNaoEfetuada *temp;
+  SegundaTentativaEntega *aux = pilha->topo;
+  SegundaTentativaEntega *temp;
 
-  // while (aux != NULL)
-  // {
-  //   temp = aux;
-  //   aux = aux->prox;
-  //   free(temp->clientes);
-  //   free(temp);
-  // }
-  // free(pilha);
+  while (aux != NULL)
+  {
+    temp = aux;
+    aux = aux->prox;
+    free(temp->produto->cliente);
+    free(temp->produto->nome);
+    free(temp->produto);
+    free(temp);
+  }
+  free(pilha);
 }

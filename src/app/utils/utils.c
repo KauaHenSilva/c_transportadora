@@ -14,9 +14,9 @@ void get_int(int *var, char *msg, int min, int max)
     {
       printf("Valor inválido. Digite um valor entre %d e %d.\n", min, max);
     }
+    clear_buffer();
   } while (input < min || input > max);
   *var = input;
-  clear_buffer();
 }
 
 void get_string(char **var, char *msg)
