@@ -1,38 +1,101 @@
 #include <devolucao_entrega.h>
+#include <print_struct.h>
+#include <historico.h>
+
 #include <stdio.h>
+#include <stdlib.h>
+
+static int idRoutaDevolucaoCont = 1;
 
 void hello_word_devolucao()
 {
   printf("Hello, World! Devolucao\n");
 }
 
-void inserirDevolucao(FilaDevolucao *fila, Devolucao *devolucao){
-  if (fila->fim == NULL) { // Se a fila estiver vazia
-        fila->inicio = devolucao;
-        fila->fim = devolucao;
-    } else { // Se a fila não estiver vazia
-        fila->fim->prox = devolucao;
-        fila->fim = devolucao;
-    }
-    devolucao->prox = NULL;
+void criarFilaDevolucao(FilaDevolucao *fila)
+{
+  fila->inicio = NULL;
+  fila->fim = NULL;
 }
 
-void buscarDevolucao(FilaDevolucao *fila, int idRota){
+void inserirDevolucao(FilaDevolucao *fila, Produto *produto, int idRotaOriginal)
+{
+  Devolucao *devolucao = (Devolucao *)malloc(sizeof(Devolucao));
+  devolucao->idRota = idRoutaDevolucaoCont++;
+  devolucao->idRotaOriginal = idRotaOriginal;
+  devolucao->produto = produto;
+  devolucao->produto->status = DEVOLVER_A_REMETENTE;
+  devolucao->prox = NULL;
+
+  if (fila->fim == NULL)
+  {
+    fila->inicio = devolucao;
+    fila->fim = devolucao;
+  }
+  else
+  {
+    fila->fim->prox = devolucao;
+    fila->fim = devolucao;
+  }
+
+  devolucao->prox = NULL;
+}
+
+void finalizarDevolucao(FilaDevolucao *fila, HistoricoEntrega **historicoEntrega)
+{
+
+  while (fila->inicio != NULL)
+  {
+    adicionaHistorico(fila->inicio->produto, historicoEntrega, fila->inicio->idRotaOriginal);
+    fila->inicio = fila->inicio->prox;
+  }
+
+  fila->fim = NULL;
+}
+
+void listarDevolucao(FilaDevolucao *fila)
+{
   Devolucao *atual = fila->inicio;
 
-    while (atual != NULL) {
-        if (atual->idRota == idRota) {
-            printf("Devolucao encontrada:\n");
-            printf("ID Rota: %d\n", atual->idRota);
-            printf("Nome Produto: %s\n", atual->nomeProduto);
-            printf("Endereco: %s\n", atual->endereco);
-            printf("ID Cliente: %d\n", atual->idCliente);
-            printf("Status: %d\n", atual->status);
-            printf("Tentativas: %d\n", atual->tentativas);
-            return;
-        }
-        atual = atual->prox;
-    }
+  while (atual != NULL)
+  {
+    printDevolucao(atual);
+    atual = atual->prox;
+  }
+}
 
-    printf("Devolucao com ID Rota %d não encontrada.\n", idRota);
+void buscarDevolucao(FilaDevolucao *fila, int idRota)
+{
+  (void)fila;
+  (void)idRota;
+  // Devolucao *atual = fila->inicio;
+
+  // while (atual != NULL)
+  // {
+  //   if (atual->idRota == idRota)
+  //   {
+  //     printDevolucao(atual);
+  //     return;
+  //   }
+  //   atual = atual->prox;
+  // }
+
+  // printf("Devolucao com ID Rota %d não encontrada.\n", idRota);
+}
+
+void freeFilaDevolucao(FilaDevolucao *fila)
+{
+  Devolucao *aux = fila->inicio;
+
+  while (aux != NULL)
+  {
+    Devolucao *temp = aux;
+    aux = aux->prox;
+    free(temp->produto->cliente);
+    free(temp->produto);
+    free(temp);
+  }
+
+  fila->inicio = NULL;
+  fila->fim = NULL;
 }

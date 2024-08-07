@@ -1,1 +1,0 @@
-inc_struct_entrega = include_directories('.')

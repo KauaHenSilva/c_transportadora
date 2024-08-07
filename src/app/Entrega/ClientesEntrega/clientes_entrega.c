@@ -1,156 +1,111 @@
 #include <clientes_entrega.h>
+#include <print_struct.h>
+#include <utils.h>
+#include <print_struct.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Dentro de Cliente Envio, temos um ponteiro de produtos, que é uma lista de produtos.
-// Defina a função de cadastro de produtos. e a função de listar produtos. logo após cadastre os produtos no cliente.
+static int idCliente = 1;
+static int idProduto = 1;
+
 void cadastrarCliente(ClienteEnvio **cliente)
 {
-    int idCliente;
-    char nome[100];
-    char endereco[200];
+    char *nome;
+    char *endereco;
+    char *cpf;
 
-    printf("Digite o nome do cliente: ");
-    fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] = '\0'; // Remove nova linha
-    printf("Digite o endereço do cliente: ");
-    fgets(endereco, sizeof(endereco), stdin);
-    endereco[strcspn(endereco, "\n")] = '\0'; // Remove nova linha
+    get_string(&nome, "Digite o nome do cliente: ");
+    get_string(&endereco, "Digite o endereço do cliente: ");
+    get_string(&cpf, "Digite o CPF do cliente: ");
 
-    // Solicitando os dados do cliente
-    printf("Digite o ID do cliente: ");
-    scanf("%d", &idCliente);
-    getchar(); // Limpando o buffer
-
-    // Alocando memória para o novo cliente
-    ClienteEnvio *novoCliente = (ClienteEnvio *)malloc(sizeof(ClienteEnvio));
-    if (novoCliente == NULL)
+    while (validarCPF(*cliente, cpf))
     {
-        printf("Erro ao alocar memória.\n");
-        return;
+        printf("CPF já cadastrado.\n");
+        get_string(&cpf, "Digite o CPF do cliente: ");
     }
 
-    // Preenchendo os dados do cliente
-    novoCliente->idCliente = idCliente;
+    ClienteEnvio *novoCliente = (ClienteEnvio *)malloc(sizeof(ClienteEnvio));
+    if (!novoCliente)
+        perror("Erro ao alocar memória para o cliente.");
+
+    novoCliente->idCliente = idCliente++;
+    novoCliente->nome = nome;
+    novoCliente->endereco = endereco;
+    novoCliente->cpf = cpf;
     novoCliente->prox = NULL;
 
-    novoCliente->nome = strdup(nome);         // Alocando a memória e copiando o nome
-    novoCliente->endereco = strdup(endereco); // Alocando a memória e copiando o endereço
-
-    // Verificando se a lista está vazia
     if (*cliente == NULL)
     {
         *cliente = novoCliente;
+        printf("Cliente cadastrado com sucesso.\n");
+        return;
     }
-    else
-    {
-        // Inserindo o novo cliente no final da lista
-        ClienteEnvio *atual = *cliente;
-        while (atual->prox != NULL)
-        {
-            atual = atual->prox;
-        }
-        atual->prox = novoCliente;
-    }
+
+    ClienteEnvio *atual = *cliente;
+    while (atual->prox != NULL)
+        atual = atual->prox;
+    atual->prox = novoCliente;
 
     printf("Cliente cadastrado com sucesso.\n");
 }
 
-// Também listaremos os produtos cadastrados no cliente.
-void listarClientes(ClienteEnvio *cliente)
+int listarClientes(ClienteEnvio *cliente)
 {
-    ClienteEnvio *atual = cliente;
-    while (atual != NULL)
+    if (cliente == NULL)
     {
-        printf("\n==============LISTA DE CLIENTES CADASTRADOS============================\n");
-        printf("Nome: %s\nID: %d\nEndereço: %s\n", atual->nome, atual->idCliente, atual->endereco);
-        atual = atual->prox;
-        printf("=========================================================================");
+        printf("Nenhum cliente cadastrado.\n");
+        return 1;
     }
+
+    printlistarClientes(cliente);
+    return 0;
 }
 
-void buscarCliente(ClienteEnvio *cliente)
-{
-    int id_Busca;
-    printf("\nDigite o ID do cliente que deseja buscar: ");
-    scanf("%d", &id_Busca);
-
-    ClienteEnvio *atual = cliente;
-    int encontrado = 0;
-
-    while (atual != NULL)
-    {
-        if (atual->idCliente == id_Busca)
-        {
-            printf("\n=================== DADOS DO CLIENTE ===================\n");
-            printf("Nome: %s\n", atual->nome);
-            printf("ID: %d\n", atual->idCliente);
-            printf("Endereço: %s\n", atual->endereco);
-            printf("========================================================\n");
-            encontrado = 1;
-            break;
-        }
-        atual = atual->prox;
-    }
-
-    if (!encontrado)
-    {
-        printf("Cliente com ID %d não encontrado.\n", id_Busca);
-    }
-}
-
-// Faça a edição do cliente, onde o usuário poderá editar o nome e o endereço do cliente.
-// e tambem a edição dos produtos
 void editarCliente(ClienteEnvio *cliente)
 {
-    int idParaEditar;
-    printf("Digite o ID do cliente que deseja editar: ");
-    scanf("%d", &idParaEditar);
-
-    ClienteEnvio *atual = cliente;
-    int encontrado = 0;
-
-    while (atual != NULL)
+    if (cliente == NULL)
     {
-        if (atual->idCliente == idParaEditar)
-        {
-            printf("\n=================== DADOS ATUAIS DO CLIENTE ===================\n");
-            printf("Nome atual: %s\n", atual->nome);
-            printf("Endereço atual: %s\n", atual->endereco);
-            printf("==============================================================\n");
-
-            printf("Digite o novo nome do cliente: ");
-            scanf(" %[^\n]s", atual->nome); // Lê o novo nome
-
-            printf("Digite o novo endereço do cliente: ");
-            scanf(" %[^\n]s", atual->endereco); // Lê o novo endereço
-
-            printf("Cliente editado com sucesso!\n");
-
-            printf("\n=================== NOVOS DADOS ATUALIZADOS ===================\n");
-            printf("Nome: %s\n", atual->nome);
-            printf("Endereço: %s\n", atual->endereco);
-            printf("==============================================================\n");
-
-            encontrado = 1;
-            break;
-        }
-        atual = atual->prox;
+        printf("Nenhum cliente cadastrado.\n");
+        return;
     }
 
-    if (!encontrado)
+    int idParaEditar;
+    get_int(&idParaEditar, "Digite o ID do cliente que deseja editar: ", 1, idCliente - 1);
+
+    ClienteEnvio *atual = retornarCliente(cliente, idParaEditar);
+    if (atual == NULL)
     {
         printf("Cliente com ID %d não encontrado.\n", idParaEditar);
+        return;
     }
+
+    int confimao;
+
+    get_int(&confimao, "Deseja editar o nome? 1 - Sim | 0 - Não: ", 0, 1);
+    if (confimao)
+        get_string(&atual->nome, "Digite o novo nome do cliente: ");
+
+    get_int(&confimao, "Deseja editar o endereço? 1 - Sim | 0 - Não: ", 0, 1);
+    if (confimao)
+        get_string(&atual->endereco, "Digite o novo endereço do cliente: ");
+
+    printf("Não é possível editar o CPF.\n");
+    printf("Cliente com ID %d editado com sucesso.\n", idParaEditar);
 }
 
-// Excluir tambem os produtos do cliente
 void excluirCliente(ClienteEnvio **cliente)
 {
+    if (*cliente == NULL)
+    {
+        printf("Nenhum cliente cadastrado.\n");
+        return;
+    }
+
     int idParaExcluir;
     printf("Digite o ID do cliente que deseja excluir: ");
-    scanf("%d", &idParaExcluir);
+    get_int(&idParaExcluir, "Digite o ID do cliente que deseja excluir: ", 1, idCliente - 1);
 
     ClienteEnvio *atual = *cliente;
     ClienteEnvio *anterior = NULL;
@@ -160,13 +115,9 @@ void excluirCliente(ClienteEnvio **cliente)
         if (atual->idCliente == idParaExcluir)
         {
             if (anterior == NULL)
-            {
                 *cliente = atual->prox;
-            }
             else
-            {
                 anterior->prox = atual->prox;
-            }
 
             free(atual->nome);
             free(atual->endereco);
@@ -183,6 +134,37 @@ void excluirCliente(ClienteEnvio **cliente)
     printf("Cliente com ID %d não encontrado.\n", idParaExcluir);
 }
 
+int validarCPF(ClienteEnvio *cliente, char *cpf)
+{
+    ClienteEnvio *atual = cliente;
+    while (atual != NULL)
+    {
+        if (strcmp(atual->cpf, cpf) == 0)
+            return 1;
+        atual = atual->prox;
+    }
+
+    return 0;
+}
+
+void freeClientes(ClienteEnvio **cliente)
+{
+    ClienteEnvio *atual = *cliente;
+    ClienteEnvio *proximo;
+
+    while (atual != NULL)
+    {
+        proximo = atual->prox;
+        free(atual->nome);
+        free(atual->endereco);
+        free(atual->cpf);
+        free(atual);
+        atual = proximo;
+    }
+
+    *cliente = NULL;
+}
+
 ClienteEnvio *retornarCliente(ClienteEnvio *cliente, int id)
 {
     ClienteEnvio *atual = cliente;
@@ -190,11 +172,40 @@ ClienteEnvio *retornarCliente(ClienteEnvio *cliente, int id)
     while (atual != NULL)
     {
         if (atual->idCliente == id)
-        {
             return atual;
-        }
         atual = atual->prox;
     }
 
     return NULL;
+}
+
+Produto *cadrastrarProduto(ClienteEnvio *cliente)
+{
+    Produto *novoProduto = (Produto *)malloc(sizeof(Produto));
+    if (!novoProduto)
+        perror("Erro ao alocar memória para o produto.");
+
+    printf("Selecione o cliente para associar o produto:\n");
+    if (listarClientes(cliente))
+    {
+        printf("Não é possível cadastrar um produto sem um cliente.\n");
+        return NULL;
+    }
+
+    int idCliente;
+    get_int(&idCliente, "Digite o ID do cliente: ", 1, idCliente - 1);
+
+    ClienteEnvio *clienteSelecionado = retornarCliente(cliente, idCliente);
+    if (clienteSelecionado == NULL)
+    {
+        printf("Cliente com ID %d não encontrado.\n", idCliente);
+        return NULL;
+    }
+
+    get_string(&novoProduto->nome, "Digite o nome do produto: ");
+    novoProduto->id_produto = idProduto++;
+    novoProduto->cliente = clienteSelecionado;
+    novoProduto->prox = NULL;
+
+    return novoProduto;
 }

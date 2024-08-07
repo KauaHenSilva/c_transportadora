@@ -2,10 +2,11 @@
 
 #include <struct_rotas_entrega.h>
 
-PilhaRotaNaoEfetuada  *criarPilhaNaoEntregue();
-void inserirRotaNaoEfetuada(PilhaRotaNaoEfetuada *pilha, RotaEntrega *rota);
-void removerPedido(PilhaRotaNaoEfetuada *pilha);
-void listarRotaNaoEfetuada(PilhaRotaNaoEfetuada  *pilha);
-void buscarRotaNaoEfetuada(PilhaRotaNaoEfetuada  *pilha, int idRota);
-void editarRotaNaoEfetuada(PilhaRotaNaoEfetuada  *pilha, int idRota);
-void liberarPilhaNaoEntregue(PilhaRotaNaoEfetuada *pilha);
+void criarPilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha);
+void inserirRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, Produto *produto, int id_rota_original);
+void removerPedido(PilhaSegundaTentativaEntega *pilha);
+void listarPilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha);
+void buscarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota);
+void editarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota);
+void finalizarSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha, FilaDevolucao *filadevolucao, HistoricoEntrega **historicoEntrega);
+void freePilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha);

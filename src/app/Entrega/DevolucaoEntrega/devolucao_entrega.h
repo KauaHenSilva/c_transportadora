@@ -4,8 +4,10 @@
 
 void hello_word_devolucao();
 
-void inserirDevolucao(FilaDevolucao *fila, Devolucao *devolucao); // Flavio
-void finalizarDevolucao(FilaDevolucao *fila); // Kaua
-void listarDevolucao(FilaDevolucao *fila); // Raisa
-void buscarDevolucao(FilaDevolucao *fila, int idRota); // Falvio
-void editarDevolucao(FilaDevolucao *fila, int idRota); // Kaua
+void criarFilaDevolucao(FilaDevolucao *pilha);
+void inserirDevolucao(FilaDevolucao *fila, Produto *produto, int idRotaOriginal);
+void finalizarDevolucao(FilaDevolucao *fila, HistoricoEntrega **historicoEntrega);
+void listarDevolucao(FilaDevolucao *fila);
+void buscarDevolucao(FilaDevolucao *fila, int idRota);
+void editarDevolucao(FilaDevolucao *fila, int idRota);
+void freeFilaDevolucao(FilaDevolucao *fila);
