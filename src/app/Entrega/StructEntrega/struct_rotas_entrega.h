@@ -45,6 +45,13 @@ typedef struct filaDevolucao
   Devolucao *fim;
 } FilaDevolucao;
 
+typedef struct scoreRota
+{
+  int ponto;
+  int idRota;
+  struct scoreRota *prox;
+} ScoreRota;
+
 typedef struct historicoEntrega
 {
   Produto *produto;

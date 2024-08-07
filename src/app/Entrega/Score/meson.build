@@ -6,6 +6,8 @@ lib_score = static_library(
   include_directories: [
     inc_score,
     inc_struct_entrega,
+    inc_struct_entrega,
+    inc_historico,
   ],
   install: true,
 )
