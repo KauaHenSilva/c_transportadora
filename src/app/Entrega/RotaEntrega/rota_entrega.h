@@ -9,7 +9,7 @@ void criarRotaEntrega(RotaEntrega *rotaEntrega, Pacote *pacote);
 void inserirRota(FilaRotaEntrega *filaRotaEntrega, RotaEntrega *newRota);
 void inserirProdutoRota(FilaRotaEntrega *filaRotaEntrega, Produto *produto);
 void listarRotas(FilaRotaEntrega *filaRotaEntrega);
-void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *pilha);
+void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *pilha, HistoricoEntrega **historico);
 RotaEntrega *retornarRota(FilaRotaEntrega *filaRotaEntrega, int idRota);
 
 void freeRotaEntrega(RotaEntrega *rota);

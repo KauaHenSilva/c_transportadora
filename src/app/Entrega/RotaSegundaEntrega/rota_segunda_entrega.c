@@ -1,8 +1,10 @@
-#include "rota_segunda_entrega.h"
 #include <rota_segunda_entrega.h>
+#include <devolucao_entrega.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <print_struct.h>
+#include <utils.h>
+#include <historico.h>
 
 static int idRoutaSegundaEntregaCont = 1;
 
@@ -18,7 +20,7 @@ void inserirRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, Produto *produto
   novo->idRota = idRoutaSegundaEntregaCont++;
   novo->idRotaOriginal = id_rota_original;
   novo->produto = produto;
-  novo->andamentoEntrega = ENTREGA_EM_PROCESSO;
+  novo->produto->status = REENTREGAR_A_CLINETE;
 
   novo->prox = pilha->topo;
   pilha->topo = novo;
@@ -26,6 +28,7 @@ void inserirRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, Produto *produto
 
 void removerPedido(PilhaSegundaTentativaEntega *pilha)
 {
+  (void)pilha;
   // if (pilha == NULL || pilha->topo == NULL)
   // {
   //   printf("A pilha esta vazia ou nao foi inicializada!\n");
@@ -78,12 +81,7 @@ void listarPilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
     while (aux != NULL)
     {
       printf("ID do Produto: %d\n", aux->produto->id_produto);
-      if (aux->andamentoEntrega == ENTREGA_EM_PROCESSO)
-        printf("Status da Rota: Entrega em Processo\n");
-      else
-        printf("Status da Rota: Entrega Finalizada\n");
-
-      printProduto(aux->produto);
+      printProduto(aux->produto, "\t");
       aux = aux->prox;
     }
   }
@@ -91,6 +89,8 @@ void listarPilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
 
 void buscarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
 {
+  (void)pilha;
+  (void)idRota;
   // if (pilha == NULL || pilha->topo == NULL)
   // {
   //   printf("A pilha esta vazia!\n");
@@ -117,6 +117,8 @@ void buscarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
 
 void editarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
 {
+  (void)pilha;
+  (void)idRota;
   // if (pilha == NULL || pilha->topo == NULL)
   // {
   //   printf("A pilha esta vazia!\n");
@@ -152,6 +154,41 @@ void editarRotaNaoEfetuada(PilhaSegundaTentativaEntega *pilha, int idRota)
   // }
 }
 
+void finalizarSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha, FilaDevolucao *filadevolucao, HistoricoEntrega **historico)
+{
+  if (pilha == NULL || pilha->topo == NULL)
+  {
+    printf("A pilha esta vazia!\n");
+    return;
+  }
+
+  while (pilha->topo != NULL)
+  {
+    Produto *auxProduto = pilha->topo->produto;
+    printf("O produto %d foi entregue para o cliente %d?\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
+
+    printf("1 - Sim\n");
+    printf("2 - Não\n");
+    int status;
+    get_int(&status, "Digite a opção desejada: ", 1, 2);
+
+    if (status == 1)
+    {
+      printf("O produto %d foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
+      adicionaHistorico(auxProduto, historico, pilha->topo->idRotaOriginal);
+    }
+    else
+    {
+      printf("O produto %d não foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
+      printf("O produto será adicionado a pilha de devolução\n");
+      inserirDevolucao(filadevolucao, auxProduto, pilha->topo->idRotaOriginal);
+    }
+    pilha->topo = pilha->topo->prox;
+  }
+
+  pilha->topo = NULL;
+}
+
 void freePilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
 {
   SegundaTentativaEntega *aux = pilha->topo;
@@ -166,5 +203,4 @@ void freePilhaSegundaTentativaEntega(PilhaSegundaTentativaEntega *pilha)
     free(temp->produto);
     free(temp);
   }
-  free(pilha);
 }

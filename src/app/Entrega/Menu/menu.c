@@ -3,17 +3,21 @@
 #include <struct_rotas_entrega.h>
 #include <rota_entrega.h>
 #include <rota_segunda_entrega.h>
+#include <devolucao_entrega.h>
 #include <clientes_entrega.h>
 #include <print_struct.h>
 #include <utils.h>
+#include <historico.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
 extern FilaRotaEntrega filaRotaEntrega;
 extern PilhaSegundaTentativaEntega pilhaSegundaTentativaEntega;
+extern FilaDevolucao filaDevolucaoEntrega;
 
 extern ClienteEnvio *allClientes;
+extern HistoricoEntrega *historicoEntrega;
 
 void menuRotaEntrega()
 {
@@ -53,6 +57,17 @@ void menuRotaEntrega()
     }
     case ADICIONAR_PRODUTO:
     {
+      if (filaDevolucaoEntrega.inicio != NULL)
+      {
+        printf("Existem produtos na fila de devolucao, finalize a devolucao antes de adicionar novos produtos a rota.\n");
+        break;
+      }
+
+      if (pilhaSegundaTentativaEntega.topo != NULL)
+      {
+        printf("Existem produtos na pilha de segunda tentativa de entrega, finalize a segunda tentativa antes de adicionar novos produtos a rota.\n");
+        break;
+      }
 
       Produto *produto = cadrastrarProduto(allClientes);
       if (!produto)
@@ -63,7 +78,7 @@ void menuRotaEntrega()
     }
     case INICIAR_ROTA:
     {
-      iniciarRota(&filaRotaEntrega, &pilhaSegundaTentativaEntega);
+      iniciarRota(&filaRotaEntrega, &pilhaSegundaTentativaEntega, &historicoEntrega);
       break;
     }
     }
@@ -145,8 +160,73 @@ void menuSegundaEntrega()
     }
     case INICIAR_SEGUNDA_ENTREGA:
     {
+      finalizarSegundaTentativaEntega(&pilhaSegundaTentativaEntega, &filaDevolucaoEntrega, &historicoEntrega);
+      break;
+    }
+    }
+    pause();
+  } while (opcao != 0);
+}
+
+void menuDevolucao()
+{
+  int opcao;
+  do
+  {
+    system("clear || cls");
+    printf("1 - Listar devolucao\n");
+    printf("2 - Finalizar devolucao\n");
+    printf("0 - Sair\n");
+    get_int(&opcao, "Digite a opcao desejada: ", 0, 2);
+
+    switch (opcao)
+    {
+    case SAIR_MENU_DEVOLUCAO:
+    {
+      break;
+    }
+    case LISTAR_DEVOLUCAO:
+    {
+      listarDevolucao(&filaDevolucaoEntrega);
+      break;
+    }
+    case INICIAR_DEVOLUCAO:
+    {
+
+      finalizarDevolucao(&filaDevolucaoEntrega, &historicoEntrega);
+      break;
+    }
+    }
+    pause();
+  } while (opcao != 0);
+}
+
+void menuHistoricoScore()
+{
+  int opcao;
+  do
+  {
+    system("clear || cls");
+    printf("1 - Listar historico\n");
+    printf("2 - Exibir score\n");
+    printf("0 - Sair\n");
+    get_int(&opcao, "Digite a opcao desejada: ", 0, 2);
+
+    switch (opcao)
+    {
+    case SAIR_MENU_HISTORICO:
+    {
+      break;
+    }
+    case LISTAR_HISTORICO:
+    {
+      listarHistorico(historicoEntrega);
+      break;
+    }
+    case EXIBIR_SCORE:
+    {
       printf("Não implementado\n");
-      // iniciarSegundaEntrega(&filaRotaNaoEfetuada);
+      // exibirScore();
       break;
     }
     }
@@ -163,8 +243,10 @@ void menuDosMenus()
     printf("1 - Menu de clientes\n");
     printf("2 - Menu de rotas\n");
     printf("3 - Menu de segunda entrega\n");
+    printf("4 - Menu de devolucao\n");
+    printf("5 - Menu de score/historico\n");
     printf("0 - Sair\n");
-    get_int(&opcao, "Digite a opcao desejada: ", 0, 3);
+    get_int(&opcao, "Digite a opcao desejada: ", 0, 5);
 
     switch (opcao)
     {
@@ -185,6 +267,16 @@ void menuDosMenus()
     case MENU_SEGUNDA_ENTREGA:
     {
       menuSegundaEntrega();
+      break;
+    }
+    case MENU_DEVOLUCAO:
+    {
+      menuDevolucao();
+      break;
+    }
+    case MENU_HISTORICO_SCORE:
+    {
+      menuHistoricoScore();
       break;
     }
     }

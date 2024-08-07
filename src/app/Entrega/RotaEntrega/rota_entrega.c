@@ -2,6 +2,7 @@
 #include <rota_segunda_entrega.h>
 #include <print_struct.h>
 #include <pacote.h>
+#include <historico.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +22,6 @@ void criarRotaEntrega(RotaEntrega *rotaEntrega, Pacote *pacote)
   rotaEntrega->idRota = idRoutaCont++;
   rotaEntrega->pacote = pacote;
   rotaEntrega->prox = NULL;
-  rotaEntrega->andamentoEntrega = ENTREGA_EM_PROCESSO;
 }
 
 void inserirRota(FilaRotaEntrega *filaRotaEntrega, RotaEntrega *newRota)
@@ -42,6 +42,8 @@ void inserirRota(FilaRotaEntrega *filaRotaEntrega, RotaEntrega *newRota)
 void inserirProdutoRota(FilaRotaEntrega *filaRotaEntrega, Produto *produto)
 {
   RotaEntrega *aux = filaRotaEntrega->inicio;
+  produto->status = 0;
+
   while (aux != NULL)
   {
     if (aux->pacote->endereco == produto->cliente->endereco)
@@ -133,9 +135,9 @@ void freeRotaEntrega(RotaEntrega *rota)
   free(rota);
 }
 
-void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *pilha)
+void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *pilha, HistoricoEntrega **historico)
 {
-  if (filaRotaEntrega->inicio == NULL)
+  if (filaRotaEntrega->inicio == NULL && pilha->topo == NULL)
   {
     printf("Fila vazia\n");
     return;
@@ -147,11 +149,9 @@ void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *
     return;
   }
 
-  RotaEntrega *aux = filaRotaEntrega->inicio;
-
-  while (aux != NULL)
+  while (filaRotaEntrega->inicio != NULL)
   {
-    Pacote *auxPacote = aux->pacote;
+    Pacote *auxPacote = filaRotaEntrega->inicio->pacote;
     Produto *auxProduto = auxPacote->produtos;
     while (auxProduto != NULL)
     {
@@ -174,22 +174,16 @@ void iniciarRota(FilaRotaEntrega *filaRotaEntrega, PilhaSegundaTentativaEntega *
       {
         printf("O produto %d foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
         Produto *produtoExcluido = auxProduto;
-        auxPacote->produtos = auxProduto;
-        free(produtoExcluido);
-        printf("MENSAGEN DEV: O produto só foi excluido mande para o historico para fazer o score.\n");
+        adicionaHistorico(produtoExcluido, historico, filaRotaEntrega->inicio->idRota);
       }
       else
       {
         printf("O produto %d não foi entregue para o cliente %d\n", auxProduto->id_produto, auxProduto->cliente->idCliente);
         printf("O produto será adicionado a pilha da segunda tentativa\n");
-        Produto *produtoEnviar = auxProduto;
-        auxPacote->produtos = auxProduto;
-        inserirRotaNaoEfetuada(pilha, produtoEnviar, aux->idRota);
+        inserirRotaNaoEfetuada(pilha, auxProduto, filaRotaEntrega->inicio->idRota);
       }
       auxProduto = auxProduto->prox;
     }
-    aux = aux->prox;
+    filaRotaEntrega->inicio = filaRotaEntrega->inicio->prox;
   }
-
-  filaRotaEntrega->inicio = aux;
 }

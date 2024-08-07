@@ -3,35 +3,14 @@
 
 void printDevolucao(Devolucao *devolucao)
 {
-  // printf("ID Rota: %d\n", devolucao->idRota);
-  // printf("Status: %d\n", devolucao->andamentoEntrega);
-  // for (Pacote *pacote = devolucao->pacotes; pacote != NULL; pacote = pacote->prox)
-  // {
-  //   printf("ID Pacote: %d\n", pacote->id_pacote);
-  //   printf("Endereco: %s\n", pacote->endereco);
-  //   printf("Status: Pacote Devolvido\n");
-  //   for (Produto *produto = pacote->produtos; produto != NULL; produto = produto->prox)
-  //   {
-  //     printf("ID Produto: %d\n", produto->id_produto);
-  //     printf("ID Cliente: %d\n", produto->cliente->idCliente);
-  //     printf("Nome Produto: %s\n", produto->nome);
-  //   }
-  // }
+  printf("ID Rota: %d\n", devolucao->idRota);
+  printf("ID Rota Original: %d\n", devolucao->idRotaOriginal);
+  printProduto(devolucao->produto, "\t");
 }
 
 void printRotaEntrega(RotaEntrega *rota)
 {
   printf("Id da rota: %d\n", rota->idRota);
-  switch (rota->andamentoEntrega)
-  {
-  case ENTREGA_FINALIZADO:
-    printf("\t- Status: Entregue\n");
-    break;
-
-  case ENTREGA_EM_PROCESSO:
-    printf("\t- Status: Em processo de entrega\n");
-    break;
-  }
 
   if (rota->pacote != NULL)
   {
@@ -58,11 +37,11 @@ void printCliente(ClienteEnvio *cliente)
   printf("\t-Endereco: %s\n", cliente->endereco);
 }
 
-void printProduto(Produto *produto)
+void printProduto(Produto *produto, char *espaco)
 {
-  printf("\t ID Produto: %d\n", produto->id_produto);
-  printf("\t ID Cliente: %d\n", produto->cliente->idCliente);
-  printf("\t Nome Produto: %s\n", produto->nome);
+  printf("%s ID Produto: %d\n", espaco, produto->id_produto);
+  printf("%s ID Cliente: %d\n", espaco, produto->cliente->idCliente);
+  printf("%s Nome Produto: %s\n", espaco, produto->nome);
 }
 
 void printPacote(Pacote *pacote)
@@ -72,9 +51,9 @@ void printPacote(Pacote *pacote)
   Produto *produto = pacote->produtos;
   while (produto != NULL)
   {
-    printf("\t\t  Produto nome %s:\n", produto->nome);
-    printf("\t\t\t- ID Produto: %d\n", produto->id_produto);
-    printf("\t\t\t- ID Cliente: %d\n", produto->cliente->idCliente);
+    printf("\t\t ID Produto: %d\n", produto->id_produto);
+    printf("\t\t\t- Produto nome %s:\n", produto->nome);
+    printf("\t\t\t- Cliente nome: %s\n", produto->cliente->nome);
     produto = produto->prox;
   }
 }

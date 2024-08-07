@@ -7,6 +7,7 @@ lib_rota_entrega = static_library(
     inc_print_struct,
     inc_utils,
     inc_pacote,
+    inc_historico,
   ],
   install: true,
 )

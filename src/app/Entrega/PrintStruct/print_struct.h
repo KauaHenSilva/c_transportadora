@@ -8,4 +8,4 @@ void printRotaEntrega(RotaEntrega *rota);
 void printlistarClientes(ClienteEnvio *cliente);
 void printCliente(ClienteEnvio *cliente);
 void printPacote(Pacote *pacote);
-void printProduto(Produto *produto);
+void printProduto(Produto *produto, char *espaco);

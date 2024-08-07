@@ -27,16 +27,34 @@ enum enMenuSegundaEntrega
   INICIAR_SEGUNDA_ENTREGA,
 };
 
+enum enMenuDevolucao
+{
+  SAIR_MENU_DEVOLUCAO,
+  LISTAR_DEVOLUCAO,
+  INICIAR_DEVOLUCAO,
+};
+
+enum enMenuHistoricoScore
+{
+  SAIR_MENU_HISTORICO,
+  LISTAR_HISTORICO,
+  EXIBIR_SCORE,
+};
+
 enum enMenuDosMenus
 {
   SAIR_MENU_DOS_MENUS,
   MENU_CLIENTE,
   MENU_ROTA_ENTREGA,
   MENU_SEGUNDA_ENTREGA,
+  MENU_DEVOLUCAO,
+  MENU_HISTORICO_SCORE,
 };
 
 void menuRotaEntrega();
 void menuCliente();
 void menuSegundaEntrega();
+void menuDevolucao();
+void menuHistoricoScore();
 
 void menuDosMenus();
