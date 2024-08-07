@@ -10,6 +10,7 @@ lib_menu = static_library(
     inc_cliente_entrega,
     inc_utils,
     inc_historico,
+    inc_score,
   ],
   install: true,
 )

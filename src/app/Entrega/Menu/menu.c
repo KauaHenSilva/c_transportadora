@@ -8,6 +8,7 @@
 #include <print_struct.h>
 #include <utils.h>
 #include <historico.h>
+#include <score.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -225,8 +226,7 @@ void menuHistoricoScore()
     }
     case EXIBIR_SCORE:
     {
-      printf("Não implementado\n");
-      // exibirScore();
+      exibirScore(historicoEntrega);
       break;
     }
     }

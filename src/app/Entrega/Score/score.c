@@ -1,12 +1,7 @@
 #include "score.h"
 #include <stdlib.h>
+#include <stdio.h>
 
-typedef struct scoreRota
-{
-  int ponto;
-  int idRota;
-  struct scoreRota *prox;
-} ScoreRota;
 
 ScoreRota *getScore(ScoreRota *score, int idRota)
 {
@@ -59,14 +54,21 @@ void exibirScore(HistoricoEntrega *historicoEntrega)
     }
 
     if (aux->produto->status == ENTREGAR_A_CLINETE)
-      score->ponto += 5;
+      scoreAux->ponto += 5;
     else if (aux->produto->status == REENTREGAR_A_CLINETE)
-      score->ponto += 3;
+      scoreAux->ponto += 3;
     else if (aux->produto->status == DEVOLVER_A_REMETENTE)
-      score->ponto -= 1;
+      scoreAux->ponto -= 1;
 
     aux = aux->prox;
   }
 
-  aux = historicoEntrega;
+  ScoreRota *auxScore = score;
+  printf("\nScore por rota:\n");
+  while (auxScore != NULL)
+  {
+    printf("Rota: %d - Ponto: %d\n", auxScore->idRota, auxScore->ponto);
+    auxScore = auxScore->prox;
+  }
+
 }
