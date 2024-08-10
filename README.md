@@ -78,5 +78,5 @@ To install the project locally, follow the steps below:
 5. **run:**
 
   ```bash
-  ./builddir/src/<nameEXE>
+  ./builddir/src/Transportadora
   ```
